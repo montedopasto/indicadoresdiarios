@@ -369,16 +369,26 @@ body.periodo-noite{filter:brightness(.75) saturate(.85) hue-rotate(-8deg);transi
   border-radius:14px;
   overflow:hidden;
   z-index:10;
-
-  box-shadow:0 10px 30px rgba(0,0,0,.6);
-  border:2px solid rgba(255,255,255,.2);
   background:#000;
+  box-shadow:0 10px 30px rgba(0,0,0,.6);
 }
 
-#tv-pip iframe{
+#tvVideo{
   width:100%;
   height:100%;
+  object-fit:cover;
+}
+
+#tvSound{
+  position:absolute;
+  bottom:8px;
+  right:8px;
+  background:rgba(0,0,0,.6);
   border:0;
+  color:#fff;
+  padding:6px 10px;
+  border-radius:8px;
+  cursor:pointer;
 }
 </style>
 </head>
