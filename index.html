@@ -1481,5 +1481,46 @@ if(video){
 
 }
 </script>
+  <script>
+var NEWS = [];
+var currentNews = 0;
+
+function loadTVNews(){
+
+  var url = "https://api.rss2json.com/v1/api.json?rss_url=https://observador.pt/feed/";
+
+  fetch(url)
+    .then(r => r.json())
+    .then(data => {
+
+      NEWS = data.items.map(n => n.title);
+
+      updateHeadline();
+      updateTicker();
+
+      setInterval(updateHeadline, 6000);
+
+    });
+}
+
+function updateHeadline(){
+  if(!NEWS.length) return;
+
+  document.getElementById("tv-headline").textContent = NEWS[currentNews];
+
+  currentNews = (currentNews + 1) % NEWS.length;
+}
+
+function updateTicker(){
+  if(!NEWS.length) return;
+
+  var txt = NEWS.join("   •   ");
+
+  document.getElementById("tv-ticker").innerHTML =
+    "<span>"+txt+"</span>";
+}
+
+loadTVNews();
+</script>
 </body>
 </html>
