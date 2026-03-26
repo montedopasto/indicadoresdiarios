@@ -1457,12 +1457,18 @@ if(video){
 var video = document.getElementById("tvVideo");
 var btn = document.getElementById("tvSound");
 
+var stream = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+
 if(video){
 
-  // STREAM QUE FUNCIONA (TESTADO)
-  video.src = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+  if(Hls.isSupported()){
+    var hls = new Hls();
+    hls.loadSource(stream);
+    hls.attachMedia(video);
+  }else{
+    video.src = stream;
+  }
 
-  // ativar som manualmente
   btn.onclick = function(){
     video.muted = false;
     video.volume = 1;
