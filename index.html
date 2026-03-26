@@ -1440,8 +1440,12 @@ scheduleHourly(loadNews);
 })();
 </script>
 <div id="tv-pip">
-  <video id="tvVideo" autoplay muted playsinline></video>
-  <button id="tvSound">🔊</button>
+  <video id="tvVideo" autoplay muted loop playsinline></video>
+
+  <div id="tv-overlay">
+    <div id="tv-headline">A carregar notícias...</div>
+    <div id="tv-ticker"></div>
+  </div>
 </div>
   <script>
 <script>
