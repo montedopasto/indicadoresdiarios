@@ -1432,13 +1432,27 @@ scheduleHourly(loadNews);
   <video id="tvVideo" autoplay muted playsinline></video>
 </div>
   <script>
+<script>
 var video = document.getElementById("tvVideo");
-
 var stream = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
 
-if(video){
-  video.src = stream;
+if (video) {
+
+  if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    // Safari (funciona direto)
+    video.src = stream;
+
+  } else if (Hls.isSupported()) {
+    // Chrome / Edge / outros
+    var hls = new Hls();
+    hls.loadSource(stream);
+    hls.attachMedia(video);
+
+  } else {
+    console.log("HLS não suportado");
+  }
 }
+</script>
 </script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </body>
