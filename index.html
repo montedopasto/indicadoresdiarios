@@ -1431,5 +1431,14 @@ scheduleHourly(loadNews);
 <div id="tv-pip">
   <video id="tvVideo" autoplay muted playsinline></video>
 </div>
+  <script>
+var video = document.getElementById("tvVideo");
+
+var stream = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+
+if(video){
+  video.src = stream;
+}
+</script>
 </body>
 </html>
