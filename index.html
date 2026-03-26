@@ -1434,23 +1434,9 @@ scheduleHourly(loadNews);
   <script>
 <script>
 var video = document.getElementById("tvVideo");
-var stream = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
 
-if (video) {
-
-  if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    // Safari (funciona direto)
-    video.src = stream;
-
-  } else if (Hls.isSupported()) {
-    // Chrome / Edge / outros
-    var hls = new Hls();
-    hls.loadSource(stream);
-    hls.attachMedia(video);
-
-  } else {
-    console.log("HLS não suportado");
-  }
+if(video){
+  video.src = "https://www.w3schools.com/html/mov_bbb.mp4";
 }
 </script>
 </script>
