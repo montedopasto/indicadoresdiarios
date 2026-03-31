@@ -136,14 +136,15 @@ header{
 .group{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:8px;
   padding:6px 10px;
   border-radius:var(--r1);
   background:linear-gradient(180deg,var(--glass),var(--glass2));
   border:1px solid var(--stroke);
   backdrop-filter: blur(10px);
-  max-width:40vw;
-  overflow:hidden;
+
+  max-width:none;        /* 🚨 REMOVE LIMITE */
+  overflow:visible;      /* 🚨 NÃO CORTA */
 }
 
 .group-title{
