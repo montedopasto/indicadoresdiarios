@@ -424,7 +424,20 @@ body.periodo-noite{filter:brightness(.75) saturate(.85) hue-rotate(-8deg);transi
     <div class="clock" id="clock">--:--</div>
   </header>
 
-  <main id="kpis"></main>
+  <main>
+
+  <div id="kpis"></div>
+
+  <div id="tv-panel">
+    <video id="tvVideo" autoplay muted playsinline></video>
+
+    <div id="tv-overlay">
+      <div id="tv-headline">A carregar notícias...</div>
+      <div id="tv-ticker"></div>
+    </div>
+  </div>
+
+</main>
 </div>
 
 <div class="footer-field" aria-hidden="true"></div>
