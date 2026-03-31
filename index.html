@@ -207,14 +207,12 @@ header{
 main{
   padding:22px 28px;
 
-    display:flex;
-  align-items:center;
-  justify-content:center;
-.card{
-  width:70%;
-  max-width:900px;
+  display:grid;
+  grid-template-columns: 1fr 420px;  /* 👈 esquerda + direita */
+  gap:20px;
+
+  height:calc(100vh - 80px - 48px - 44px);
 }
-  gap:22px;
 
   height:calc(100vh - 90px - 48px - 44px);
 }
