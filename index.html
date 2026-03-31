@@ -1505,7 +1505,59 @@ function updateTicker(){
   document.getElementById("tv-ticker").innerHTML =
     "<span>"+txt+"</span>";
 }
+#tv-panel{
+  position:relative;
+  width:100%;
+  height:100%;
 
+  border-radius:18px;
+  overflow:hidden;
+
+  background:#000;
+  border:1px solid rgba(255,255,255,.2);
+
+  box-shadow:0 20px 40px rgba(0,0,0,.5);
+}
+
+#tv-panel video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+#tv-overlay{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+
+  background:linear-gradient(to top, rgba(0,0,0,.85), transparent);
+  padding:12px;
+}
+
+#tv-headline{
+  font-size:14px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+#tv-ticker{
+  font-size:12px;
+  opacity:.85;
+  white-space:nowrap;
+  overflow:hidden;
+}
+
+#tv-ticker span{
+  display:inline-block;
+  padding-left:100%;
+  animation:tvscroll 25s linear infinite;
+}
+
+@keyframes tvscroll{
+  from{ transform:translateX(0) }
+  to{ transform:translateX(-100%) }
+}
 loadTVNews();
 </script>
 </body>
