@@ -1454,9 +1454,30 @@ scheduleHourly(loadNews);
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
 var video = document.getElementById("tvVideo");
-var btn = document.getElementById("tvSound");
 
 var stream = "https://live-hls-web-aje.getaj.net/AJE/index.m3u8";
+
+if(video){
+
+  video.muted = true; // autoplay hack
+
+  if(Hls.isSupported()){
+    var hls = new Hls();
+    hls.loadSource(stream);
+    hls.attachMedia(video);
+  }else{
+    video.src = stream;
+  }
+
+  video.play().then(()=>{
+    // desbloqueia som ao fim de 2s
+    setTimeout(()=>{
+      video.muted = false;
+      video.volume = 0.6;
+    },2000);
+  }).catch(()=>{});
+
+}
 
 if(video){
 
