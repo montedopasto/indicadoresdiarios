@@ -402,7 +402,11 @@ main{
 .world-news__title{margin:4px 0 0;font-size:20px;letter-spacing:-.02em}
 .world-news__live{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:.12em;color:rgba(255,255,255,.7)}
 .world-news__live::before{content:"";width:7px;height:7px;border-radius:50%;background:#66d28d;box-shadow:0 0 0 5px rgba(102,210,141,.11)}
-.editorial-story{min-height:0;padding:24px 22px 18px;display:flex;flex-direction:column;justify-content:center}
+.editorial-story{min-height:0;padding:20px 22px 18px;display:flex;flex-direction:column;justify-content:center}
+.editorial-image{width:100%;height:clamp(120px,18vh,205px);margin-bottom:18px;object-fit:cover;border-radius:15px;background:rgba(255,255,255,.06);box-shadow:0 14px 30px rgba(0,0,0,.22)}
+.editorial-story.has-image{justify-content:flex-start}
+.editorial-story.has-image h2{font-size:clamp(21px,1.85vw,31px)}
+.editorial-story.has-image .editorial-summary{-webkit-line-clamp:2;margin-top:12px}
 .editorial-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:17px}
 .editorial-tag{padding:6px 9px;border-radius:999px;background:rgba(224,185,108,.14);border:1px solid rgba(224,185,108,.25);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#f2d69f}
 .editorial-region{padding:6px 9px;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7)}
@@ -1453,8 +1457,13 @@ function scheduleHourly(fn){
 var WORLD_NEWS = [];
 var WORLD_NEWS_INDEX = 0;
 var WORLD_NEWS_TIMER = null;
-var WORLD_NEWS_RSS = "https://www.beefcentral.com/feed/";
-var WORLD_NEWS_URL = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(WORLD_NEWS_RSS);
+var WORLD_NEWS_FEEDS = [
+  {url:"https://www.agroportal.pt/feed/",region:"Portugal",priority:1,translate:false},
+  {url:"https://www.vidarural.pt/feed/",region:"Portugal",priority:1,translate:false},
+  {url:"https://www.agriculturaemar.com/feed/",region:"Portugal",priority:1,translate:false},
+  {url:"https://www.beefcentral.com/feed/",region:"Austrália · Mundo",priority:2,translate:true}
+];
+var WORLD_NEWS_REFRESH_MS = 10*60*1000;
 
 function plainText(value){
   var node = document.createElement("div");
@@ -1491,13 +1500,47 @@ function newsDate(value){
   if(isNaN(date.getTime())) return "Atualidade";
   return date.toLocaleDateString("pt-PT",{day:"2-digit",month:"short"});
 }
+function storyImage(item){
+  if(item.thumbnail) return item.thumbnail;
+  if(item.enclosure && item.enclosure.link) return item.enclosure.link;
+  var match = (item.description || item.content || "").match(/<img[^>]+src=["']([^"']+)["']/i);
+  return match ? match[1] : "";
+}
+function isRelevantNews(text){
+  return /agric|agro|pecu|bovin|gado|carne|animal|veterin|ração|racao|cereal|milho|trigo|soja|leite|past|rural|clima|seca|export|import|preço|preco|mercado|cattle|beef|livestock|feed|farm/i.test(text || "");
+}
+function translateStory(story){
+  if(!story.translate) return Promise.resolve(story);
+  var cacheKey = "MONTE_NEWS_PT_"+story.title;
+  try{
+    var cached = localStorage.getItem(cacheKey);
+    if(cached){
+      var saved = JSON.parse(cached);
+      story.title = saved.title;
+      story.summary = saved.summary;
+      return Promise.resolve(story);
+    }
+  }catch(e){}
+  var combined = story.title+" ||| "+story.summary.slice(0,280);
+  var url = "https://api.mymemory.translated.net/get?q="+encodeURIComponent(combined)+"&langpair=en|pt-PT";
+  return fetch(url).then(function(r){ return r.json(); }).then(function(data){
+    var translated = data && data.responseData ? plainText(data.responseData.translatedText) : "";
+    var parts = translated.split(" ||| ");
+    if(parts[0]) story.title = parts[0];
+    if(parts[1]) story.summary = parts.slice(1).join(" ||| ");
+    try{ localStorage.setItem(cacheKey,JSON.stringify({title:story.title,summary:story.summary})); }catch(e){}
+    return story;
+  }).catch(function(){ return story; });
+}
 function renderWorldNews(){
   if(!WORLD_NEWS.length) return;
   var story = WORLD_NEWS[WORLD_NEWS_INDEX];
   var storyEl = document.getElementById("worldNewsStory");
   var dotsEl = document.getElementById("worldNewsDots");
-  storyEl.classList.remove("story-loading");
+  storyEl.classList.remove("story-loading","has-image");
+  if(story.image) storyEl.classList.add("has-image");
   storyEl.innerHTML =
+    (story.image ? "<img class='editorial-image' src='"+escapeHTML(story.image)+"' alt='' loading='eager' referrerpolicy='no-referrer'>" : "")+
     "<div class='editorial-meta'><span class='editorial-tag'>"+escapeHTML(story.category)+"</span><span class='editorial-region'>"+escapeHTML(story.region)+"</span></div>"+
     "<h2>"+escapeHTML(story.title)+"</h2>"+
     "<p class='editorial-summary'>"+escapeHTML(story.summary)+"</p>"+
@@ -1511,20 +1554,40 @@ function rotateWorldNews(){
   renderWorldNews();
 }
 function loadWorldNews(){
-  fetch(WORLD_NEWS_URL,{cache:"no-store"})
-    .then(function(r){ if(!r.ok) throw new Error("news request"); return r.json(); })
-    .then(function(data){
-      var items = data && Array.isArray(data.items) ? data.items : [];
-      WORLD_NEWS = items.slice(0,7).map(function(item){
-        var parsed = splitHeadline(item.title);
-        if(parsed.source === "Fonte internacional" && data.feed && data.feed.title) parsed.source = data.feed.title;
-        var context = parsed.title+" "+plainText(item.description);
-        var summary = plainText(item.description).replace(parsed.title,"").trim();
-        if(!summary || summary.length < 45) summary = "Notícia selecionada pela relevância para os mercados, a produção e a economia agropecuária internacional.";
-        var region = newsRegion(context);
-        if(region === "Mundo" && /beef central/i.test(parsed.source)) region = "Austrália · Mundo";
-        return {title:parsed.title,source:parsed.source,summary:summary,category:newsCategory(context),region:region,date:newsDate(item.pubDate)};
-      }).filter(function(item){ return item.title; });
+  var requests = WORLD_NEWS_FEEDS.map(function(feed){
+    var url = "https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed.url)+"&_="+Date.now();
+    return fetch(url,{cache:"no-store"}).then(function(r){ if(!r.ok) throw new Error("news request"); return r.json(); }).then(function(data){
+      return {feed:feed,data:data};
+    });
+  });
+  Promise.allSettled(requests)
+    .then(function(results){
+      var stories = [];
+      results.forEach(function(result){
+        if(result.status !== "fulfilled") return;
+        var feed = result.value.feed;
+        var data = result.value.data;
+        var sourceName = data.feed && data.feed.title ? data.feed.title : "Fonte especializada";
+        var items = data && Array.isArray(data.items) ? data.items : [];
+        items.slice(0,8).forEach(function(item){
+          var parsed = splitHeadline(item.title);
+          if(parsed.source === "Fonte internacional") parsed.source = sourceName;
+          var description = plainText(item.description).replace(parsed.title,"").trim();
+          var context = parsed.title+" "+description;
+          if(!isRelevantNews(context)) return;
+          if(!description || description.length < 45) description = "Atualidade relevante para a agricultura, a produção pecuária e os mercados agroalimentares.";
+          stories.push({title:parsed.title,source:parsed.source,summary:description,category:newsCategory(context),region:feed.region,date:newsDate(item.pubDate),timestamp:new Date(item.pubDate).getTime()||0,image:storyImage(item),priority:feed.priority,translate:feed.translate});
+        });
+      });
+      stories.sort(function(a,b){ return a.priority-b.priority || b.timestamp-a.timestamp; });
+      var seen = {};
+      stories = stories.filter(function(story){ var key=story.title.toLowerCase(); if(seen[key]) return false; seen[key]=true; return true; });
+      var portuguese = stories.filter(function(s){ return s.priority===1; }).slice(0,5);
+      var international = stories.filter(function(s){ return s.priority===2; }).slice(0,2);
+      return Promise.all(portuguese.concat(international).map(translateStory));
+    })
+    .then(function(stories){
+      WORLD_NEWS = stories;
       if(!WORLD_NEWS.length) throw new Error("empty news");
       WORLD_NEWS_INDEX = 0;
       document.getElementById("worldNewsStatus").textContent = "Atualizado";
@@ -1549,7 +1612,8 @@ setInterval(updateDayPeriod, 5*60*1000);
 scheduleHourly(updateWeather);
 scheduleHourly(loadKPIs);
 scheduleHourly(loadNews);
-scheduleHourly(loadWorldNews);
+loadWorldNews();
+setInterval(loadWorldNews,WORLD_NEWS_REFRESH_MS);
 </script>
 
 <audio id="radioPlayer" preload="auto" autoplay loop muted>
