@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="pt-PT">
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Monte do Pasto · Painel Vivo</title>
@@ -358,6 +357,79 @@ body.periodo-manha{filter:brightness(1.05) saturate(1.05);transition:filter 2s e
 body.periodo-dia{filter:brightness(1.1);transition:filter 2s ease}
 body.periodo-por{filter:sepia(.18) saturate(1.2);transition:filter 2s ease}
 body.periodo-noite{filter:brightness(.75) saturate(.85) hue-rotate(-8deg);transition:filter 2s ease}
+
+/* ========= EDITORIAL DASHBOARD ========= */
+.app{grid-template-rows:82px 1fr 68px}
+header{padding:8px 24px;gap:18px}
+.logo{height:48px}
+.header-left{flex:0 0 auto}
+.header-mid{min-width:0;gap:12px}
+.group{min-width:0;background:rgba(15,31,24,.43);box-shadow:0 10px 30px rgba(8,20,14,.12)}
+.clock{min-width:108px;font-size:27px}
+
+main{
+  min-height:0;
+  height:auto;
+  padding:16px 28px 22px;
+  display:grid;
+  grid-template-columns:minmax(0, 58fr) minmax(360px, 42fr);
+  gap:20px;
+}
+#kpis{min-width:0;min-height:0;display:flex}
+#kpis .card{width:100%}
+.card{
+  min-height:0;
+  padding:clamp(24px,3vw,46px);
+  justify-content:center;
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(9,27,19,.58),rgba(9,20,15,.42));
+  box-shadow:0 24px 54px rgba(10,25,17,.28),inset 0 1px rgba(255,255,255,.10);
+}
+.card h3{font-size:clamp(17px,1.4vw,24px);margin-bottom:18px;letter-spacing:.08em}
+.kpi{font-size:clamp(40px,5.4vw,78px)}
+.kpi-multiline{font-size:clamp(23px,2.7vw,42px)}
+.kpi-sub{font-size:clamp(16px,1.35vw,21px);line-height:1.45}
+
+.world-news{
+  min-width:0;min-height:0;display:grid;grid-template-rows:auto 1fr auto;
+  overflow:hidden;border:1px solid rgba(255,255,255,.22);border-radius:24px;
+  background:linear-gradient(160deg,rgba(13,29,22,.88),rgba(20,24,18,.72));
+  box-shadow:0 24px 54px rgba(10,25,17,.3),inset 0 1px rgba(255,255,255,.10);
+  backdrop-filter:blur(16px);
+}
+.world-news__header{display:flex;align-items:center;justify-content:space-between;padding:20px 22px 14px;border-bottom:1px solid rgba(255,255,255,.10)}
+.world-news__eyebrow{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#e0b96c}
+.world-news__title{margin:4px 0 0;font-size:20px;letter-spacing:-.02em}
+.world-news__live{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:.12em;color:rgba(255,255,255,.7)}
+.world-news__live::before{content:"";width:7px;height:7px;border-radius:50%;background:#66d28d;box-shadow:0 0 0 5px rgba(102,210,141,.11)}
+.editorial-story{min-height:0;padding:24px 22px 18px;display:flex;flex-direction:column;justify-content:center}
+.editorial-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:17px}
+.editorial-tag{padding:6px 9px;border-radius:999px;background:rgba(224,185,108,.14);border:1px solid rgba(224,185,108,.25);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#f2d69f}
+.editorial-region{padding:6px 9px;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.editorial-story h2{margin:0;max-width:18ch;font-size:clamp(24px,2.25vw,36px);line-height:1.08;letter-spacing:-.035em}
+.editorial-summary{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;margin:16px 0 0;max-width:52ch;font-size:clamp(14px,1.12vw,17px);line-height:1.55;color:rgba(244,246,243,.73)}
+.editorial-source{margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;color:rgba(255,255,255,.55)}
+.editorial-source strong{color:rgba(255,255,255,.9)}
+.world-news__footer{display:flex;align-items:center;justify-content:space-between;padding:14px 22px 17px;border-top:1px solid rgba(255,255,255,.1)}
+.story-dots{display:flex;gap:7px}.story-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.22)}.story-dot.active{width:22px;border-radius:8px;background:#e0b96c}
+.story-count{font-size:11px;font-weight:700;color:rgba(255,255,255,.5)}
+.story-loading{opacity:.65}
+
+.footer-field{height:90px}
+.news-bar{height:58px}
+.news-track{font-size:18px;animation-duration:55s}
+.news-item{margin-right:80px}
+
+@media(max-width:1100px){
+  .app{grid-template-rows:76px 1fr 58px}.header-mid .group:first-child{display:none}
+  main{padding:12px 18px 18px;grid-template-columns:minmax(0,55fr) minmax(330px,45fr)}
+  .pill:nth-child(n+4){display:none}.editorial-summary{-webkit-line-clamp:3}
+}
+@media(max-width:780px){
+  body{overflow:auto}.app{height:auto;min-height:100vh;grid-template-rows:auto auto 58px}
+  header{min-height:76px}.header-mid{display:none}main{grid-template-columns:1fr;min-height:900px}
+  #kpis{min-height:390px}.world-news{min-height:430px}.news-bar{position:fixed}
+}
 </style>
 </head>
 
@@ -395,14 +467,22 @@ body.periodo-noite{filter:brightness(.75) saturate(.85) hue-rotate(-8deg);transi
 
   <div id="kpis"></div>
 
-  <div id="tv-panel">
-    <video id="tvVideo" autoplay muted playsinline></video>
-
-    <div id="tv-overlay">
-      <div id="tv-headline">A carregar notícias...</div>
-      <div id="tv-ticker"></div>
+  <aside class="world-news" aria-label="Notícias agropecuárias internacionais">
+    <div class="world-news__header">
+      <div>
+        <div class="world-news__eyebrow">Inteligência global</div>
+        <h2 class="world-news__title">Agro World News</h2>
+      </div>
+      <div class="world-news__live" id="worldNewsStatus">A atualizar</div>
     </div>
-  </div>
+    <article class="editorial-story story-loading" id="worldNewsStory" aria-live="polite">
+      <div class="editorial-meta"><span class="editorial-tag">Mercados & pecuária</span><span class="editorial-region">Mundo</span></div>
+      <h2>A recolher as principais notícias agropecuárias mundiais…</h2>
+      <p class="editorial-summary">Bovinos, carne, preços, comércio, alimentação animal, sanidade, clima e economia rural.</p>
+      <div class="editorial-source"><strong>Fontes internacionais</strong><span>Atualização automática</span></div>
+    </article>
+    <div class="world-news__footer"><div class="story-dots" id="worldNewsDots"></div><div class="story-count" id="worldNewsCount">—</div></div>
+  </aside>
 
 </main>
 </div>
@@ -1369,6 +1449,99 @@ function scheduleHourly(fn){
   }, msToNextHour);
 }
 
+/* ================= AGRO WORLD NEWS ================= */
+var WORLD_NEWS = [];
+var WORLD_NEWS_INDEX = 0;
+var WORLD_NEWS_TIMER = null;
+var WORLD_NEWS_RSS = "https://www.beefcentral.com/feed/";
+var WORLD_NEWS_URL = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(WORLD_NEWS_RSS);
+
+function plainText(value){
+  var node = document.createElement("div");
+  node.innerHTML = value || "";
+  return (node.textContent || node.innerText || "").replace(/\s+/g," ").trim();
+}
+function splitHeadline(value){
+  var title = plainText(value);
+  var parts = title.split(" - ");
+  if(parts.length < 2) return { title:title, source:"Fonte internacional" };
+  return { title:parts.slice(0,-1).join(" - "), source:parts[parts.length-1] };
+}
+function newsCategory(text){
+  text = (text || "").toLowerCase();
+  if(/doen|sanit|health|febre|vírus|virus|vacina/.test(text)) return "Sanidade animal";
+  if(/clima|seca|chuva|calor|weather|drought/.test(text)) return "Clima & produção";
+  if(/ração|racao|feed|milho|soja|cereal/.test(text)) return "Alimentação animal";
+  if(/export|import|comércio|comercio|trade|tarifa/.test(text)) return "Comércio mundial";
+  if(/preço|preco|price|mercado|market|futuros/.test(text)) return "Carne & preços";
+  return "Bovinos & pecuária";
+}
+function newsRegion(text){
+  text = (text || "").toLowerCase();
+  if(/brasil|mercosul|argentin|uruguai|paraguai/.test(text)) return "América do Sul";
+  if(/eua|estados unidos|united states|canad/.test(text)) return "América do Norte";
+  if(/austrália|australia|nova zelândia|new zealand/.test(text)) return "Oceânia";
+  if(/união europeia|uniao europeia|europa|portugal|espanha|frança|franca|irlanda|reino unido/.test(text)) return "Europa";
+  if(/china|japão|japao|índia|india|ásia|asia/.test(text)) return "Ásia";
+  if(/áfrica|africa/.test(text)) return "África";
+  return "Mundo";
+}
+function newsDate(value){
+  var date = new Date(value);
+  if(isNaN(date.getTime())) return "Atualidade";
+  return date.toLocaleDateString("pt-PT",{day:"2-digit",month:"short"});
+}
+function renderWorldNews(){
+  if(!WORLD_NEWS.length) return;
+  var story = WORLD_NEWS[WORLD_NEWS_INDEX];
+  var storyEl = document.getElementById("worldNewsStory");
+  var dotsEl = document.getElementById("worldNewsDots");
+  storyEl.classList.remove("story-loading");
+  storyEl.innerHTML =
+    "<div class='editorial-meta'><span class='editorial-tag'>"+escapeHTML(story.category)+"</span><span class='editorial-region'>"+escapeHTML(story.region)+"</span></div>"+
+    "<h2>"+escapeHTML(story.title)+"</h2>"+
+    "<p class='editorial-summary'>"+escapeHTML(story.summary)+"</p>"+
+    "<div class='editorial-source'><strong>"+escapeHTML(story.source)+"</strong><span>"+escapeHTML(story.date)+"</span></div>";
+  dotsEl.innerHTML = WORLD_NEWS.map(function(_,i){ return "<span class='story-dot"+(i===WORLD_NEWS_INDEX?" active":"")+"'></span>"; }).join("");
+  document.getElementById("worldNewsCount").textContent = (WORLD_NEWS_INDEX+1)+" / "+WORLD_NEWS.length;
+}
+function rotateWorldNews(){
+  if(WORLD_NEWS.length < 2) return;
+  WORLD_NEWS_INDEX = (WORLD_NEWS_INDEX + 1) % WORLD_NEWS.length;
+  renderWorldNews();
+}
+function loadWorldNews(){
+  fetch(WORLD_NEWS_URL,{cache:"no-store"})
+    .then(function(r){ if(!r.ok) throw new Error("news request"); return r.json(); })
+    .then(function(data){
+      var items = data && Array.isArray(data.items) ? data.items : [];
+      WORLD_NEWS = items.slice(0,7).map(function(item){
+        var parsed = splitHeadline(item.title);
+        if(parsed.source === "Fonte internacional" && data.feed && data.feed.title) parsed.source = data.feed.title;
+        var context = parsed.title+" "+plainText(item.description);
+        var summary = plainText(item.description).replace(parsed.title,"").trim();
+        if(!summary || summary.length < 45) summary = "Notícia selecionada pela relevância para os mercados, a produção e a economia agropecuária internacional.";
+        var region = newsRegion(context);
+        if(region === "Mundo" && /beef central/i.test(parsed.source)) region = "Austrália · Mundo";
+        return {title:parsed.title,source:parsed.source,summary:summary,category:newsCategory(context),region:region,date:newsDate(item.pubDate)};
+      }).filter(function(item){ return item.title; });
+      if(!WORLD_NEWS.length) throw new Error("empty news");
+      WORLD_NEWS_INDEX = 0;
+      document.getElementById("worldNewsStatus").textContent = "Atualizado";
+      renderWorldNews();
+      if(WORLD_NEWS_TIMER) clearInterval(WORLD_NEWS_TIMER);
+      WORLD_NEWS_TIMER = setInterval(rotateWorldNews,12000);
+    })
+    .catch(function(){
+      document.getElementById("worldNewsStatus").textContent = "A tentar novamente";
+      document.getElementById("worldNewsStory").innerHTML =
+        "<div class='editorial-meta'><span class='editorial-tag'>Radar internacional</span><span class='editorial-region'>Mundo</span></div>"+
+        "<h2>Ligação às fontes internacionais temporariamente indisponível</h2>"+
+        "<p class='editorial-summary'>O painel mantém os indicadores operacionais ativos e volta a tentar recolher notícias automaticamente na próxima atualização.</p>"+
+        "<div class='editorial-source'><strong>Agro World News</strong><span>Atualização automática</span></div>";
+    });
+}
+
 /* ================= INIT ================= */
 updateDayPeriod();
 setInterval(updateDayPeriod, 5*60*1000);
@@ -1376,6 +1549,7 @@ setInterval(updateDayPeriod, 5*60*1000);
 scheduleHourly(updateWeather);
 scheduleHourly(loadKPIs);
 scheduleHourly(loadNews);
+scheduleHourly(loadWorldNews);
 </script>
 
 <audio id="radioPlayer" preload="auto" autoplay loop muted>
@@ -1418,145 +1592,6 @@ scheduleHourly(loadNews);
   document.addEventListener("click", startRadio);
   document.addEventListener("touchstart", startRadio);
 })();
-</script>
-  <script>
-</script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script>
-var video = document.getElementById("tvVideo");
-var stream = "https://live-hls-web-aje.getaj.net/AJE/index.m3u8";
-
-if(video){
-
-  video.muted = true;
-
-  if(Hls.isSupported()){
-    var hls = new Hls();
-    hls.loadSource(stream);
-    hls.attachMedia(video);
-  }else{
-    video.src = stream;
-  }
-
-  video.play().then(()=>{
-    setTimeout(()=>{
-      video.muted = false;
-      video.volume = 0.6;
-    },2000);
-  }).catch(()=>{});
-
-}
-
-if(video){
-
-  if(Hls.isSupported()){
-    var hls = new Hls();
-    hls.loadSource(stream);
-    hls.attachMedia(video);
-  }else{
-    video.src = stream;
-  }
-
-  btn.onclick = function(){
-    video.muted = false;
-    video.volume = 1;
-    video.play();
-  };
-
-}
-</script>
-  <script>
-var NEWS = [];
-var currentNews = 0;
-
-function loadTVNews(){
-
-  var url = "https://api.rss2json.com/v1/api.json?rss_url=https://observador.pt/feed/";
-
-  fetch(url)
-    .then(r => r.json())
-    .then(data => {
-
-      NEWS = data.items.map(n => n.title);
-
-      updateHeadline();
-      updateTicker();
-
-      setInterval(updateHeadline, 6000);
-
-    });
-}
-
-function updateHeadline(){
-  if(!NEWS.length) return;
-
-  document.getElementById("tv-headline").textContent = NEWS[currentNews];
-
-  currentNews = (currentNews + 1) % NEWS.length;
-}
-
-function updateTicker(){
-  if(!NEWS.length) return;
-
-  var txt = NEWS.join("   •   ");
-
-  document.getElementById("tv-ticker").innerHTML =
-    "<span>"+txt+"</span>";
-}
-#tv-panel{
-  position:relative;
-  width:100%;
-  height:100%;
-
-  border-radius:18px;
-  overflow:hidden;
-
-  background:#000;
-  border:1px solid rgba(255,255,255,.2);
-
-  box-shadow:0 20px 40px rgba(0,0,0,.5);
-}
-
-#tv-panel video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-#tv-overlay{
-  position:absolute;
-  bottom:0;
-  left:0;
-  right:0;
-
-  background:linear-gradient(to top, rgba(0,0,0,.85), transparent);
-  padding:12px;
-}
-
-#tv-headline{
-  font-size:14px;
-  font-weight:700;
-  margin-bottom:6px;
-}
-
-#tv-ticker{
-  font-size:12px;
-  opacity:.85;
-  white-space:nowrap;
-  overflow:hidden;
-}
-
-#tv-ticker span{
-  display:inline-block;
-  padding-left:100%;
-  animation:tvscroll 25s linear infinite;
-}
-
-@keyframes tvscroll{
-  from{ transform:translateX(0) }
-  to{ transform:translateX(-100%) }
-}
-loadTVNews();
 </script>
 </body>
 </html>
