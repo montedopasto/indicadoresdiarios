@@ -503,6 +503,8 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
 .news-bar{height:58px;background:rgba(3,12,8,.88);border-top-color:var(--agro-line);display:flex}.news-label{align-self:stretch;display:flex;align-items:center;padding:0 22px;background:var(--agro-gold);color:#172018;font-size:10px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;white-space:nowrap;z-index:2}.news-track{display:flex;width:max-content;padding-left:24px;font-size:16px;font-weight:700;animation:news-scroll 58s linear infinite}.footer-field{height:28px;bottom:58px;background-size:auto 38px;opacity:.75}@keyframes news-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .news-modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:30px;background:rgba(1,8,5,.74);backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:.25s}.news-modal.open{opacity:1;pointer-events:auto}.news-modal__card{width:min(720px,94vw);max-height:84vh;overflow:auto;padding:28px;border:1px solid rgba(220,239,228,.2);border-radius:22px;background:#0b2117;box-shadow:0 36px 110px rgba(0,0,0,.6);transform:translateY(12px) scale(.98);transition:.28s}.news-modal.open .news-modal__card{transform:none}.news-modal__close{float:right}.news-modal__meta{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--agro-gold)}.news-modal h2{margin:23px 0 15px;font-size:clamp(25px,3vw,39px);line-height:1.1;letter-spacing:-.04em}.news-modal p{font-size:14px;line-height:1.7;color:#bdcbc4}.news-modal__insight{margin-top:20px;padding:15px;border:1px solid var(--agro-line);border-radius:13px;background:rgba(255,255,255,.035);font-size:12px;color:#dfe9e3}.news-modal__insight strong{display:block;margin-bottom:5px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--agro-gold)}
 .ui-toast{position:fixed;z-index:40;left:50%;bottom:72px;transform:translate(-50%,12px);padding:9px 13px;border:1px solid var(--agro-line);border-radius:10px;background:#102b1d;color:#e5eee9;font-size:11px;opacity:0;pointer-events:none;transition:.22s}.ui-toast.show{opacity:1;transform:translate(-50%,0)}
+.right-stage{position:relative;min-height:0;overflow:hidden}.news-view,.today-view{position:absolute;inset:0;transition:opacity .55s ease,transform .6s cubic-bezier(.2,.8,.2,1)}.news-view{opacity:1;transform:none}.today-view{opacity:0;transform:translateX(-18px);pointer-events:none}.world-news.today-mode .today-view{opacity:1;transform:none}.world-news.today-mode .news-view{opacity:0;transform:translateX(18px);pointer-events:none}.world-news.today-mode .news-filters,.world-news.today-mode #newsPrev,.world-news.today-mode #newsPause,.world-news.today-mode #newsNext{opacity:.16}.news-view .editorial-story{height:100%;padding-bottom:36px}.news-view .world-news__footer{right:17px;bottom:12px}
+.today-view{padding:16px 18px 14px;display:grid;grid-template-rows:auto auto 1fr auto;gap:11px}.today-heading{display:flex;justify-content:space-between;align-items:center}.today-heading h3{margin:0;font-size:clamp(20px,1.6vw,27px);letter-spacing:-.035em}.today-heading span{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--agro-muted)}.today-priority{padding:12px 14px;border:1px solid rgba(255,124,109,.28);border-radius:13px;background:linear-gradient(100deg,rgba(137,37,29,.18),rgba(255,255,255,.02))}.today-priority.good{border-color:rgba(117,211,151,.25);background:rgba(117,211,151,.06)}.today-priority__label{font-size:8px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--agro-red)}.today-priority.good .today-priority__label{color:var(--agro-green)}.today-priority__title{margin-top:5px;font-size:clamp(14px,1.15vw,19px);font-weight:800}.today-priority__detail{margin-top:4px;font-size:10px;color:var(--agro-muted)}.today-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;min-height:0}.today-card{display:flex;flex-direction:column;justify-content:center;padding:10px 12px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.03)}.today-card__label{font-size:8px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--agro-muted)}.today-card__value{margin-top:5px;font-size:clamp(18px,1.6vw,25px);font-weight:900;letter-spacing:-.035em}.today-card__note{margin-top:3px;font-size:9px;color:var(--agro-muted)}.today-bottom{display:grid;grid-template-columns:.85fr 1.15fr;gap:8px}.today-note{padding:9px 11px;border-left:2px solid var(--agro-gold);border-radius:8px;background:rgba(255,255,255,.025);font-size:9px;line-height:1.35;color:#d7e1db}.today-note strong{display:block;margin-bottom:3px;font-size:7px;letter-spacing:.11em;text-transform:uppercase;color:var(--agro-gold)}
 @media(max-width:1100px){main{grid-template-columns:minmax(0,1fr) minmax(390px,.86fr)}.kpi-nav{grid-template-columns:repeat(3,1fr)}.kpi-jump:nth-child(n+4){display:none}}
 @media(max-width:780px){main{grid-template-columns:1fr;min-height:1200px}.kpi-console{min-height:600px}.world-news{min-height:590px}.world-news__footer{bottom:129px}.app{grid-template-rows:auto auto 58px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
@@ -559,7 +561,7 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
   <aside class="world-news" aria-label="Notícias agropecuárias internacionais">
     <div class="world-news__header">
       <div class="world-news__top">
-        <div><div class="world-news__eyebrow">Inteligência global</div><h2 class="world-news__title">Notícias & mercados</h2></div>
+        <div><div class="world-news__eyebrow" id="worldPanelEyebrow">Informação interna</div><h2 class="world-news__title" id="worldPanelTitle">Hoje no Monte do Pasto</h2></div>
         <div class="control-set">
           <button class="control-button" id="newsPrev" aria-label="Notícia anterior">‹</button>
           <button class="control-button" id="newsPause" aria-label="Pausar notícias">Ⅱ</button>
@@ -570,13 +572,23 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
       <nav class="news-filters" id="newsCategories" aria-label="Categorias de notícias"></nav>
       <nav class="news-filters regions" id="newsRegions" aria-label="Regiões das notícias"></nav>
     </div>
-    <article class="editorial-story story-loading" id="worldNewsStory" aria-live="polite">
-      <div class="editorial-meta"><span class="editorial-tag">Mercados & pecuária</span><span class="editorial-region">Mundo</span></div>
-      <h2>A recolher as principais notícias agropecuárias mundiais…</h2>
-      <p class="editorial-summary">Bovinos, carne, preços, comércio, alimentação animal, sanidade, clima e economia rural.</p>
-      <div class="editorial-source"><strong>Fontes internacionais</strong><span>Atualização automática</span></div>
-    </article>
-    <div class="world-news__footer"><div class="story-dots" id="worldNewsDots"></div><div class="story-count" id="worldNewsCount">—</div></div>
+    <div class="right-stage">
+      <section class="today-view" id="todayView" aria-label="Hoje no Monte do Pasto">
+        <div class="today-heading"><h3>Hoje no Monte do Pasto</h3><span id="todayDate">—</span></div>
+        <div class="today-priority" id="todayPriority"></div>
+        <div class="today-grid" id="todayGrid"></div>
+        <div class="today-bottom"><div class="today-note" id="todayWeather"></div><div class="today-note" id="todayMessage"></div></div>
+      </section>
+      <div class="news-view" id="newsView">
+        <article class="editorial-story story-loading" id="worldNewsStory" aria-live="polite">
+          <div class="editorial-meta"><span class="editorial-tag">Mercados & pecuária</span><span class="editorial-region">Mundo</span></div>
+          <h2>A recolher as principais notícias agropecuárias mundiais…</h2>
+          <p class="editorial-summary">Bovinos, carne, preços, comércio, alimentação animal, sanidade, clima e economia rural.</p>
+          <div class="editorial-source"><strong>Fontes internacionais</strong><span>Atualização automática</span></div>
+        </article>
+        <div class="world-news__footer"><div class="story-dots" id="worldNewsDots"></div><div class="story-count" id="worldNewsCount">—</div></div>
+      </div>
+    </div>
     <section class="market-pulse" aria-label="Market Pulse">
       <div class="market-heading"><span>Radar da exploração</span><span id="radarUpdated">Dados reais do painel</span></div>
       <div class="market-grid" id="marketPulse"></div>
@@ -1386,6 +1398,42 @@ function refreshOperationalRadar(){
   if(updated) updated.textContent="Atualizado às "+new Date().toLocaleTimeString("pt-PT",{hour:"2-digit",minute:"2-digit"});
 }
 
+function findCardByTitle(part){
+  return cards.find(function(card){var h=card.querySelector("h3");return h && h.textContent.toLowerCase().indexOf(part.toLowerCase())>=0;})||null;
+}
+function compactCardValue(card){
+  if(!card) return "—";
+  var value=card.querySelector(".kpi");
+  return value?value.textContent.trim().replace(/\s+/g," "):"—";
+}
+function refreshTodayView(){
+  var view=document.getElementById("todayView");
+  if(!view) return;
+  var critical=cards.find(function(card){return card.getAttribute("data-signal")==="critical";});
+  var priority=document.getElementById("todayPriority");
+  if(critical){
+    var criticalTitle=critical.querySelector("h3");
+    priority.className="today-priority";
+    priority.innerHTML="<div class='today-priority__label'>Prioridade operacional</div><div class='today-priority__title'>"+escapeHTML(criticalTitle?criticalTitle.textContent.replace(/^[^\p{L}\p{N}]+/u,"").trim():"Alerta ativo")+"</div><div class='today-priority__detail'>"+escapeHTML(compactCardValue(critical))+" · acompanhamento prioritário</div>";
+  }else{
+    priority.className="today-priority good";
+    priority.innerHTML="<div class='today-priority__label'>Estado operacional</div><div class='today-priority__title'>Sem alertas críticos ativos</div><div class='today-priority__detail'>Manter o plano de trabalho e a monitorização habitual.</div>";
+  }
+  var stock=findCardByTitle("stock animais"),bought=findCardByTitle("animais comprados"),safety=findCardByTitle("dias sem acidentes"),comfort=document.getElementById("thiCard");
+  var items=[
+    {label:"Efetivo atual",value:compactCardValue(stock),note:"animais em stock"},
+    {label:"Compras este mês",value:compactCardValue(bought),note:"entradas registadas"},
+    {label:"Segurança",value:compactCardValue(safety),note:"sem acidentes"},
+    {label:"Conforto bovino",value:compactCardValue(comfort),note:comfort&&comfort.querySelector(".kpi-sub")?comfort.querySelector(".kpi-sub").textContent.trim():"a sincronizar"}
+  ];
+  document.getElementById("todayGrid").innerHTML=items.map(function(item){return "<div class='today-card'><div class='today-card__label'>"+escapeHTML(item.label)+"</div><div class='today-card__value'>"+escapeHTML(item.value)+"</div><div class='today-card__note'>"+escapeHTML(item.note)+"</div></div>";}).join("");
+  var temp=document.getElementById("nowTemp").textContent,desc=document.getElementById("nowDesc").textContent;
+  document.getElementById("todayWeather").innerHTML="<strong>Condições de hoje</strong>"+escapeHTML(temp+" · "+desc)+(LAST_RAIN_3D!==null?" · "+Number(LAST_RAIN_3D).toFixed(1)+" L/m² em 3 dias":"");
+  var message=document.querySelector("#newsTrack .news-item");
+  document.getElementById("todayMessage").innerHTML="<strong>Comunicação interna</strong>"+escapeHTML(message?message.textContent.trim():"Sem comunicação publicada para hoje.");
+  document.getElementById("todayDate").textContent=new Date().toLocaleDateString("pt-PT",{weekday:"long",day:"2-digit",month:"long"});
+}
+
 function handleKpiImageError(image){
   var card=image.closest(".kpi-card");
   if(card){card.remove();refreshCardsAndRotation();kpiToast("Indicador visual indisponível foi ignorado");}
@@ -1434,6 +1482,7 @@ function refreshCardsAndRotation(){
   if(firstCritical>=0 && !tvPriorityPrimed){page=firstCritical;tvPriorityPrimed=true;}
   showKpi(page,false);
   refreshOperationalRadar();
+  refreshTodayView();
 }
 function rotate(){
   showKpi(page+1,false);
@@ -1574,6 +1623,7 @@ function loadNews(){
       track.style.animation = "none";
       track.offsetHeight;
       track.style.animation = "";
+      refreshTodayView();
     })
     .catch(function(){});
 }
@@ -1904,7 +1954,7 @@ function loadWorldNews(){
       stories=stories.filter(function(story){return !story.translate || !looksEnglish(story.title);});
       WORLD_NEWS = stories.length ? stories : WORLD_NEWS_FALLBACK.slice();
       WORLD_NEWS_INDEX = 0;
-      document.getElementById("worldNewsStatus").textContent = "Atualizado";
+      document.getElementById("worldNewsStatus").textContent = RIGHT_VIEW_MODE==="today" ? "Emissão automática" : "Atualizado";
       renderNewsFilters();
       renderWorldNews();
       restartWorldNewsTimer();
@@ -1912,7 +1962,7 @@ function loadWorldNews(){
     .catch(function(){
       WORLD_NEWS=WORLD_NEWS_FALLBACK.slice();
       WORLD_NEWS_INDEX=0;
-      document.getElementById("worldNewsStatus").textContent = "Reserva editorial";
+      document.getElementById("worldNewsStatus").textContent = RIGHT_VIEW_MODE==="today" ? "Emissão automática" : "Reserva editorial";
       renderNewsFilters();renderWorldNews();restartWorldNewsTimer();
     });
 }
@@ -1921,13 +1971,28 @@ function renderMarketPulse(){
   refreshOperationalRadar();
 }
 
+var RIGHT_VIEW_MODE="today";
+var RIGHT_VIEW_TIMER=null;
+function setRightView(mode){
+  RIGHT_VIEW_MODE=mode;
+  var panel=document.querySelector(".world-news");
+  var today=mode==="today";
+  panel.classList.toggle("today-mode",today);
+  document.getElementById("worldPanelEyebrow").textContent=today?"Informação interna":"Inteligência global";
+  document.getElementById("worldPanelTitle").textContent=today?"Hoje no Monte do Pasto":"Notícias & mercados";
+  document.getElementById("worldNewsStatus").textContent=today?"Emissão automática":"Atualizado";
+  if(today) refreshTodayView();
+  clearTimeout(RIGHT_VIEW_TIMER);
+  RIGHT_VIEW_TIMER=setTimeout(function(){setRightView(today?"news":"today");},today?20000:12000);
+}
+
 document.getElementById("newsPrev").addEventListener("click",function(){WORLD_NEWS_INDEX--;renderWorldNews();restartWorldNewsTimer();});
 document.getElementById("newsNext").addEventListener("click",function(){WORLD_NEWS_INDEX++;renderWorldNews();restartWorldNewsTimer();});
 document.getElementById("newsPause").addEventListener("click",function(){WORLD_NEWS_PAUSED=!WORLD_NEWS_PAUSED;this.textContent=WORLD_NEWS_PAUSED?"▶":"Ⅱ";this.setAttribute("aria-label",WORLD_NEWS_PAUSED?"Retomar notícias":"Pausar notícias");restartWorldNewsTimer();kpiToast(WORLD_NEWS_PAUSED?"Notícias em pausa":"Notícias em rotação");});
 document.getElementById("newsModalClose").addEventListener("click",function(){document.getElementById("newsModal").classList.remove("open");document.getElementById("worldNewsStory").focus();});
 document.getElementById("newsModal").addEventListener("click",function(event){if(event.target===this)this.classList.remove("open");});
 document.addEventListener("keydown",function(event){if(event.key==="Escape")document.getElementById("newsModal").classList.remove("open");});
-renderMarketPulse();renderNewsFilters();WORLD_NEWS=WORLD_NEWS_FALLBACK.slice();renderWorldNews();restartWorldNewsTimer();
+renderMarketPulse();renderNewsFilters();WORLD_NEWS=WORLD_NEWS_FALLBACK.slice();renderWorldNews();restartWorldNewsTimer();setRightView("today");
 
 /* ================= INIT ================= */
 updateDayPeriod();
