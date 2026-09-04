@@ -589,8 +589,8 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
         <div class="world-news__footer"><div class="story-dots" id="worldNewsDots"></div><div class="story-count" id="worldNewsCount">—</div></div>
       </div>
     </div>
-    <section class="market-pulse" aria-label="Market Pulse">
-      <div class="market-heading"><span>Radar da exploração</span><span id="radarUpdated">Dados reais do painel</span></div>
+    <section class="market-pulse" aria-label="Condições para o trabalho">
+      <div class="market-heading"><span>Condições para o trabalho</span><span id="radarUpdated">Previsão a atualizar</span></div>
       <div class="market-grid" id="marketPulse"></div>
     </section>
   </aside>
@@ -629,8 +629,8 @@ var NEWS_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgtnmWS6X
 var WEATHER_URL =
   "https://api.open-meteo.com/v1/forecast?latitude="+LAT+"&longitude="+LON+
   "&current_weather=true"+
-  "&hourly=temperature_2m,relativehumidity_2m,precipitation,weathercode,windspeed_10m,shortwave_radiation"+
-  "&daily=temperature_2m_max,temperature_2m_min,weathercode"+
+  "&hourly=temperature_2m,apparent_temperature,relativehumidity_2m,precipitation,precipitation_probability,weathercode,windspeed_10m,windgusts_10m,shortwave_radiation,uv_index"+
+  "&daily=temperature_2m_max,temperature_2m_min,weathercode,sunrise,sunset,uv_index_max"+
   "&timezone=auto";
 
 /* ================= ESTADO THI (memória) ================= */
@@ -640,6 +640,7 @@ var LAST_RAIN_YTD = 0;
 
 var LAST_RAIN_3D = null;
 var LAST_TEMP = 0;
+var LAST_WEATHER = {temp:null,apparent:null,rh:null,wind:null,gust:null,rain6h:null,rainChance:null,uv:null,sunset:null,code:null,thunder:false,updated:null};
 var IGCB_HISTORY = [];
 var LAST_HISTORY_DAY = null;
 var ISA_HISTORY = [];
@@ -1149,10 +1150,16 @@ function updateWeather(){
       var cw = d.current_weather || {};
       var temp = Math.round(cw.temperature || 0);
       var code = (cw.weathercode!==undefined ? cw.weathercode : 3);
+      var hTemps = (d.hourly && d.hourly.temperature_2m) ? d.hourly.temperature_2m : [];
+      var hCodes = (d.hourly && d.hourly.weathercode) ? d.hourly.weathercode : [];
+      var hTimes = (d.hourly && d.hourly.time) ? d.hourly.time : [];
+      var currentHour = String(cw.time||new Date().toISOString()).slice(0,13);
+      var currentIndex = hTimes.findIndex(function(value){return String(value).slice(0,13)===currentHour;});
+      if(currentIndex<0) currentIndex=0;
 
       var rh = 0;
-      if (d.hourly && d.hourly.relativehumidity_2m && d.hourly.relativehumidity_2m[0] !== undefined){
-        rh = Number(d.hourly.relativehumidity_2m[0]) || 0;
+      if (d.hourly && d.hourly.relativehumidity_2m && d.hourly.relativehumidity_2m[currentIndex] !== undefined){
+        rh = Number(d.hourly.relativehumidity_2m[currentIndex]) || 0;
       }
 
       document.getElementById("nowTemp").textContent = temp+"°C";
@@ -1162,16 +1169,13 @@ function updateWeather(){
       var hoursEl = document.getElementById("hours");
       hoursEl.innerHTML = "";
 
-      var hTemps = (d.hourly && d.hourly.temperature_2m) ? d.hourly.temperature_2m : [];
-      var hCodes = (d.hourly && d.hourly.weathercode) ? d.hourly.weathercode : [];
-      var hTimes = (d.hourly && d.hourly.time) ? d.hourly.time : [];
-
       for (var i=1;i<=4;i++){
-        var t = Math.round(hTemps[i] || 0);
-        var c = (hCodes[i]!==undefined ? hCodes[i] : 3);
+        var forecastIndex=currentIndex+i;
+        var t = Math.round(hTemps[forecastIndex] || 0);
+        var c = (hCodes[forecastIndex]!==undefined ? hCodes[forecastIndex] : 3);
         var hh = "--h";
-        if (hTimes[i]){
-          var dt = new Date(hTimes[i]);
+        if (hTimes[forecastIndex]){
+          var dt = new Date(hTimes[forecastIndex]);
           hh = ("0"+dt.getHours()).slice(-2) + "h";
         }
         hoursEl.innerHTML +=
@@ -1220,15 +1224,26 @@ var thi = calcTHI(temp, rh);
 
 // 👉 vento atual
 var wind = 0;
-if (d.hourly && d.hourly.windspeed_10m && d.hourly.windspeed_10m[0] !== undefined){
-  wind = Number(d.hourly.windspeed_10m[0]) || 0;
+if (d.hourly && d.hourly.windspeed_10m && d.hourly.windspeed_10m[currentIndex] !== undefined){
+  wind = Number(d.hourly.windspeed_10m[currentIndex]) || 0;
 }
 
 // 👉 radiação solar atual
 var radiation = 0;
-if (d.hourly && d.hourly.shortwave_radiation && d.hourly.shortwave_radiation[0] !== undefined){
-  radiation = Number(d.hourly.shortwave_radiation[0]) || 0;
+if (d.hourly && d.hourly.shortwave_radiation && d.hourly.shortwave_radiation[currentIndex] !== undefined){
+  radiation = Number(d.hourly.shortwave_radiation[currentIndex]) || 0;
 }
+
+var apparentArr=(d.hourly&&d.hourly.apparent_temperature)||[];
+var rainArr=(d.hourly&&d.hourly.precipitation)||[];
+var rainChanceArr=(d.hourly&&d.hourly.precipitation_probability)||[];
+var gustArr=(d.hourly&&d.hourly.windgusts_10m)||[];
+var uvArr=(d.hourly&&d.hourly.uv_index)||[];
+var nextRain=rainArr.slice(currentIndex+1,currentIndex+7).reduce(function(sum,value){return sum+(Number(value)||0);},0);
+var nextChance=Math.max.apply(null,rainChanceArr.slice(currentIndex+1,currentIndex+7).map(function(value){return Number(value)||0;}).concat([0]));
+var nextGust=Math.max.apply(null,gustArr.slice(currentIndex,currentIndex+7).map(function(value){return Number(value)||0;}).concat([wind]));
+var todayUv=d.daily&&d.daily.uv_index_max&&d.daily.uv_index_max[0]!==undefined?Number(d.daily.uv_index_max[0])||0:Math.max.apply(null,uvArr.slice(currentIndex,currentIndex+12).map(function(value){return Number(value)||0;}).concat([0]));
+LAST_WEATHER={temp:temp,apparent:apparentArr[currentIndex]!==undefined?Math.round(Number(apparentArr[currentIndex])):temp,rh:rh,wind:Math.round(wind),gust:Math.round(nextGust),rain6h:nextRain,rainChance:Math.round(nextChance),uv:todayUv,sunset:d.daily&&d.daily.sunset?d.daily.sunset[0]:null,code:code,thunder:hCodes.slice(currentIndex,currentIndex+7).some(function(value){return Number(value)>=95;}),updated:new Date()};
 
 getRainLast3Days().then(function(rain3d){
 
@@ -1236,6 +1251,8 @@ getRainLast3Days().then(function(rain3d){
   LAST_TEMP = temp;
 
   calculateAndRenderIGCB(temp, rh, wind, radiation);
+  refreshTodayView();
+  refreshOperationalRadar();
 
 })
 .catch(function(){});
@@ -1376,26 +1393,50 @@ function metricFromCard(id,titlePart){
   return {value:value?value.textContent.trim().replace(/\s+/g," "):"—",signal:card.getAttribute("data-signal")||"neutral"};
 }
 
+function workConditions(){
+  var w=LAST_WEATHER||{};
+  if(w.temp===null) return {signal:"warning",title:"Previsão a atualizar",short:"A atualizar",action:"Aguardar a próxima leitura meteorológica antes de avaliar as condições exteriores."};
+  if(w.thunder) return {signal:"critical",title:"Possibilidade de trovoada",short:"Trovoada",action:"Atenção redobrada no exterior. Confirmar as condições com o responsável."};
+  if((w.gust||0)>=50) return {signal:"critical",title:"Rajadas fortes previstas",short:"Vento forte",action:"Proteger materiais soltos e avaliar trabalhos expostos com o responsável."};
+  if((w.apparent||w.temp)>=32 || (w.uv||0)>=8) return {signal:"warning",title:"Calor e exposição solar",short:"Calor",action:"Reforçar hidratação, pausas e proteção solar, sobretudo entre as 11h e as 17h."};
+  if((w.rainChance||0)>=70 || (w.rain6h||0)>=3) return {signal:"warning",title:"Chuva provável nas próximas horas",short:"Chuva",action:"Atenção a pisos escorregadios, acessos, equipamento e visibilidade."};
+  if((w.apparent||w.temp)<=5) return {signal:"warning",title:"Temperatura baixa",short:"Frio",action:"Utilizar vestuário adequado e ter atenção acrescida à humidade e aos pisos."};
+  if((w.uv||0)>=3) return {signal:"good",title:"Exposição solar moderada",short:"Atenção UV",action:"Manter hidratação, roupa adequada e proteção solar durante os trabalhos exteriores."};
+  return {signal:"good",title:"Condições meteorológicas favoráveis",short:"Favorável",action:"Sem condicionantes meteorológicas relevantes. Manter a atenção habitual."};
+}
+
+function uvDescription(value){
+  if(value>=8) return "muito elevado";
+  if(value>=6) return "elevado";
+  if(value>=3) return "moderado";
+  return "baixo";
+}
+
+function formatWeatherTime(value){
+  if(!value) return "—";
+  var date=new Date(value);
+  return isNaN(date.getTime())?"—":date.toLocaleTimeString("pt-PT",{hour:"2-digit",minute:"2-digit"});
+}
+
 function refreshOperationalRadar(){
   var target=document.getElementById("marketPulse");
   if(!target) return;
-  var igcb=metricFromCard("thiCard"),rain=metricFromCard("rainKpiCard"),stock=metricFromCard(null,"stock animais");
-  var igcbNumber=parseFloat(igcb.value.replace(",","."));
   var stateEl=document.getElementById("operationalState");
   var criticalCards=cards.filter(function(card){return card.getAttribute("data-signal")==="critical";});
   var warningCards=cards.filter(function(card){return card.getAttribute("data-signal")==="warning";});
   var label="Operação estável",stateClass="";
   if(criticalCards.length){label=criticalCards.length+" alerta"+(criticalCards.length>1?"s":"")+" crítico"+(criticalCards.length>1?"s":"");stateClass="critical";}
-  else if(warningCards.length || (isFinite(igcbNumber) && igcbNumber<70)){label=(warningCards.length||1)+" ponto"+((warningCards.length||1)>1?"s":"")+" sob vigilância";stateClass="warning";}
+  else if(warningCards.length){label=warningCards.length+" ponto"+(warningCards.length>1?"s":"")+" sob vigilância";stateClass="warning";}
   if(stateEl){stateEl.className="operational-state "+stateClass;stateEl.textContent=label;}
+  var conditions=workConditions(),w=LAST_WEATHER||{};
   var metrics=[
-    {name:"Conforto bovino",value:igcb.value,detail:isFinite(igcbNumber)?igcbLevel(igcbNumber).txt:"A sincronizar",signal:igcb.signal},
-    {name:"Chuva anual",value:rain.value,detail:"desde 1 de janeiro",signal:rain.signal},
-    {name:"Efetivo atual",value:stock.value,detail:"animais em stock",signal:stock.signal}
+    {name:"Risco meteorológico",value:conditions.short,detail:conditions.title,signal:conditions.signal},
+    {name:"Chuva · próximas 6h",value:w.rain6h===null?"—":Number(w.rain6h).toFixed(1)+" L/m²",detail:w.rainChance===null?"previsão a atualizar":w.rainChance+"% probabilidade máxima",signal:(w.rainChance||0)>=70?"warning":"good"},
+    {name:"Vento / rajadas",value:w.wind===null?"—":w.wind+" / "+w.gust+" km/h",detail:"leitura atual / máximo 6h",signal:(w.gust||0)>=50?"critical":((w.gust||0)>=35?"warning":"good")}
   ];
   target.innerHTML=metrics.map(function(item){return "<div class='market-item "+item.signal+"'><div class='market-name'>"+escapeHTML(item.name)+"</div><div class='market-row'><b class='radar-value'>"+escapeHTML(item.value)+"</b></div><div class='radar-status'>"+escapeHTML(item.detail)+"</div></div>";}).join("");
   var updated=document.getElementById("radarUpdated");
-  if(updated) updated.textContent="Atualizado às "+new Date().toLocaleTimeString("pt-PT",{hour:"2-digit",minute:"2-digit"});
+  if(updated) updated.textContent="Previsão atualizada às "+(w.updated?w.updated:new Date()).toLocaleTimeString("pt-PT",{hour:"2-digit",minute:"2-digit"});
 }
 
 function findCardByTitle(part){
@@ -1409,26 +1450,19 @@ function compactCardValue(card){
 function refreshTodayView(){
   var view=document.getElementById("todayView");
   if(!view) return;
-  var critical=cards.find(function(card){return card.getAttribute("data-signal")==="critical";});
+  var conditions=workConditions(),w=LAST_WEATHER||{};
   var priority=document.getElementById("todayPriority");
-  if(critical){
-    var criticalTitle=critical.querySelector("h3");
-    priority.className="today-priority";
-    priority.innerHTML="<div class='today-priority__label'>Prioridade operacional</div><div class='today-priority__title'>"+escapeHTML(criticalTitle?criticalTitle.textContent.replace(/^[^\p{L}\p{N}]+/u,"").trim():"Alerta ativo")+"</div><div class='today-priority__detail'>"+escapeHTML(compactCardValue(critical))+" · acompanhamento prioritário</div>";
-  }else{
-    priority.className="today-priority good";
-    priority.innerHTML="<div class='today-priority__label'>Estado operacional</div><div class='today-priority__title'>Sem alertas críticos ativos</div><div class='today-priority__detail'>Manter o plano de trabalho e a monitorização habitual.</div>";
-  }
-  var stock=findCardByTitle("stock animais"),bought=findCardByTitle("animais comprados"),safety=findCardByTitle("dias sem acidentes"),comfort=document.getElementById("thiCard");
+  priority.className="today-priority"+(conditions.signal==="good"?" good":"");
+  priority.innerHTML="<div class='today-priority__label'>Medida preventiva recomendada</div><div class='today-priority__title'>"+escapeHTML(conditions.title)+"</div><div class='today-priority__detail'>"+escapeHTML(conditions.action)+"</div>";
+  var sunset=formatWeatherTime(w.sunset);
   var items=[
-    {label:"Efetivo atual",value:compactCardValue(stock),note:"animais em stock"},
-    {label:"Compras este mês",value:compactCardValue(bought),note:"entradas registadas"},
-    {label:"Segurança",value:compactCardValue(safety),note:"sem acidentes"},
-    {label:"Conforto bovino",value:compactCardValue(comfort),note:comfort&&comfort.querySelector(".kpi-sub")?comfort.querySelector(".kpi-sub").textContent.trim():"a sincronizar"}
+    {label:"Sensação térmica",value:w.apparent===null?"—":w.apparent+"°C",note:w.rh===null?"humidade a atualizar":w.rh+"% de humidade"},
+    {label:"Chuva · próximas 6h",value:w.rain6h===null?"—":Number(w.rain6h).toFixed(1)+" L/m²",note:w.rainChance===null?"previsão a atualizar":w.rainChance+"% probabilidade máxima"},
+    {label:"Vento / rajadas",value:w.wind===null?"—":w.wind+" / "+w.gust, note:"km/h · atual / máximo previsto"},
+    {label:"Exposição UV",value:w.uv===null?"—":Number(w.uv).toFixed(1),note:w.uv===null?"a atualizar":uvDescription(w.uv)+" · pôr do sol "+sunset}
   ];
   document.getElementById("todayGrid").innerHTML=items.map(function(item){return "<div class='today-card'><div class='today-card__label'>"+escapeHTML(item.label)+"</div><div class='today-card__value'>"+escapeHTML(item.value)+"</div><div class='today-card__note'>"+escapeHTML(item.note)+"</div></div>";}).join("");
-  var temp=document.getElementById("nowTemp").textContent,desc=document.getElementById("nowDesc").textContent;
-  document.getElementById("todayWeather").innerHTML="<strong>Condições de hoje</strong>"+escapeHTML(temp+" · "+desc)+(LAST_RAIN_3D!==null?" · "+Number(LAST_RAIN_3D).toFixed(1)+" L/m² em 3 dias":"");
+  document.getElementById("todayWeather").innerHTML="<strong>Decisão operacional</strong>"+escapeHTML("Confirmar sempre com o responsável · previsão atualizada "+(w.updated?w.updated.toLocaleTimeString("pt-PT",{hour:"2-digit",minute:"2-digit"}):"—"));
   var message=document.querySelector("#newsTrack .news-item");
   document.getElementById("todayMessage").innerHTML="<strong>Comunicação interna</strong>"+escapeHTML(message?message.textContent.trim():"Sem comunicação publicada para hoje.");
   document.getElementById("todayDate").textContent=new Date().toLocaleDateString("pt-PT",{weekday:"long",day:"2-digit",month:"long"});
