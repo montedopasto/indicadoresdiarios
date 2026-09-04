@@ -444,6 +444,64 @@ main{
   header{min-height:76px}.header-mid{display:none}main{padding-inline:18px;grid-template-columns:1fr;min-height:900px}
   #kpis{min-height:650px}.world-news{min-height:430px}.news-bar{position:fixed}
 }
+
+/* ========= INTERACTIVE CONTROL ROOM V2 ========= */
+:root{
+  --agro-ink:#f4f7f1;
+  --agro-muted:#a6b5ad;
+  --agro-gold:#dbb967;
+  --agro-green:#75d397;
+  --agro-red:#ff7c6d;
+  --agro-line:rgba(220,239,228,.13);
+  --agro-panel:rgba(6,20,14,.72);
+}
+body{
+  background:
+    radial-gradient(900px 650px at 8% -10%,rgba(51,117,78,.42),transparent 70%),
+    radial-gradient(800px 600px at 100% 0,rgba(154,112,48,.20),transparent 68%),
+    linear-gradient(145deg,#0a1d14,#173b28 56%,#29251a);
+}
+.app{grid-template-rows:86px minmax(0,1fr) 58px}
+header{padding:10px clamp(24px,2.4vw,46px);border-bottom:1px solid rgba(255,255,255,.07)}
+.now,.group{border-color:var(--agro-line);background:rgba(5,20,13,.48);box-shadow:inset 0 1px rgba(255,255,255,.05)}
+main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.15fr) minmax(480px,.85fr);gap:16px}
+
+.kpi-console,.world-news{
+  min-width:0;min-height:0;border:1px solid var(--agro-line);border-radius:24px;
+  background:linear-gradient(155deg,rgba(8,29,19,.88),rgba(6,18,13,.78));
+  box-shadow:0 28px 75px rgba(0,0,0,.30),inset 0 1px rgba(255,255,255,.06);
+  overflow:hidden;backdrop-filter:blur(20px);
+}
+.kpi-console{display:grid;grid-template-rows:62px minmax(0,1fr) 86px}
+.kpi-toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--agro-line)}
+.panel-kicker{font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--agro-gold)}
+.panel-title{margin-top:3px;font-size:15px;font-weight:800}.panel-subtitle{font-size:10px;color:var(--agro-muted);margin-top:2px}
+.panel-live{display:inline-block;width:6px;height:6px;margin-right:7px;border-radius:50%;background:var(--agro-green);box-shadow:0 0 0 5px rgba(117,211,151,.09);animation:livePulse 2.3s infinite}
+@keyframes livePulse{50%{box-shadow:0 0 0 10px rgba(117,211,151,0)}}
+.control-set{display:flex;align-items:center;gap:7px}.control-button{width:32px;height:32px;display:grid;place-items:center;padding:0;border:1px solid var(--agro-line);border-radius:10px;background:rgba(255,255,255,.045);color:#fff;cursor:pointer;transition:.2s ease}.control-button:hover{transform:translateY(-1px);background:rgba(255,255,255,.1);border-color:rgba(219,185,103,.35)}.control-button:focus-visible,.filter-button:focus-visible,.kpi-jump:focus-visible{outline:2px solid var(--agro-gold);outline-offset:2px}.control-count{min-width:43px;text-align:center;font-size:10px;font-weight:700;color:var(--agro-muted)}
+
+.kpi-console #kpis{position:relative;display:block;min-height:0;overflow:hidden}
+.kpi-console #kpis .card{position:absolute;inset:18px;width:auto;height:auto;min-height:0;padding:clamp(24px,3vw,48px);display:flex;opacity:1;transform:none;transition:opacity .48s ease,transform .55s cubic-bezier(.2,.8,.2,1);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border-color:var(--agro-line);box-shadow:none}
+.kpi-console #kpis .card.hidden{display:flex;opacity:0;transform:translateX(26px) scale(.985);pointer-events:none}
+.kpi-console #kpis .card h3{font-size:clamp(15px,1.25vw,21px);color:var(--agro-gold);margin-bottom:18px}
+.kpi-console #kpis .kpi{font-size:clamp(52px,6vw,96px);letter-spacing:-.055em}.kpi-console #kpis .kpi span{font-size:.28em}.kpi-console #kpis .kpi-multiline{font-size:clamp(24px,2.7vw,43px);line-height:1.18}.kpi-console #kpis .kpi-sub{font-size:clamp(14px,1.1vw,18px)}
+.kpi-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding:11px 16px 14px;border-top:1px solid var(--agro-line);overflow:hidden}
+.kpi-jump{position:relative;min-width:0;padding:8px 9px;border:1px solid transparent;border-radius:11px;background:rgba(255,255,255,.025);color:#fff;text-align:left;cursor:pointer;overflow:hidden;transition:.22s}.kpi-jump:hover{background:rgba(255,255,255,.065)}.kpi-jump.active{border-color:rgba(219,185,103,.34);background:rgba(219,185,103,.08)}.kpi-jump span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:8px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--agro-muted)}.kpi-jump b{display:block;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.kpi-progress{position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--agro-gold)}.kpi-progress.running{animation:kpiProgress var(--rotation-time) linear forwards}@keyframes kpiProgress{to{width:100%}}
+
+.world-news{grid-template-rows:auto minmax(0,1fr) 120px}
+.world-news__header{display:block;padding:14px 17px 10px}.world-news__top{display:flex;align-items:center;justify-content:space-between}.world-news__eyebrow{color:var(--agro-gold)}.world-news__title{font-size:17px}.world-news__live{font-size:9px}.news-filters{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;margin-top:10px}.news-filters::-webkit-scrollbar{display:none}.news-filters.regions{margin-top:6px}.filter-button{flex:0 0 auto;padding:5px 8px;border:1px solid transparent;border-radius:8px;background:rgba(255,255,255,.04);color:var(--agro-muted);font-size:9px;font-weight:700;cursor:pointer;transition:.2s}.filter-button:hover{background:rgba(255,255,255,.09);color:#fff}.filter-button.active{background:var(--agro-gold);color:#172018}.regions .filter-button{padding:4px 8px;border-color:var(--agro-line)}.regions .filter-button.active{background:rgba(117,211,151,.13);border-color:rgba(117,211,151,.34);color:#aee9c1}
+.editorial-story{position:relative;padding:15px 17px 13px;justify-content:flex-start;cursor:pointer;animation:storyEnter .42s ease both}.editorial-story:hover{background:rgba(255,255,255,.025)}@keyframes storyEnter{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+.featured-now{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:9px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--agro-gold)}
+.editorial-image{height:clamp(90px,12vh,140px);margin-bottom:10px}.editorial-meta{margin-bottom:10px}.editorial-tag{padding:5px 8px}.editorial-story h2,.editorial-story.has-image h2{font-size:clamp(18px,1.5vw,25px);line-height:1.12}.editorial-story h2.title-long{font-size:clamp(17px,1.35vw,22px)}.editorial-story h2.title-very-long{font-size:clamp(15px,1.15vw,19px)}.editorial-summary{font-size:clamp(11px,.85vw,14px);margin-top:9px;-webkit-line-clamp:3}.editorial-source{padding-top:9px;font-size:10px}.open-detail{color:var(--agro-gold);font-weight:700}
+.market-pulse{padding:10px 16px 13px;border-top:1px solid var(--agro-line)}.market-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:8px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--agro-muted)}.market-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.market-item{padding:7px 8px;border:1px solid rgba(255,255,255,.05);border-radius:10px;background:rgba(255,255,255,.03)}.market-name{font-size:7px;font-weight:700;text-transform:uppercase;color:var(--agro-muted);white-space:nowrap}.market-row{display:flex;align-items:end;justify-content:space-between;margin-top:3px}.market-row b{font-size:11px}.market-change{font-size:8px;font-weight:800;color:var(--agro-green)}.market-item.negative .market-change{color:var(--agro-red)}.sparkline{width:100%;height:16px;margin-top:3px}.sparkline polyline{fill:none;stroke:var(--agro-green);stroke-width:2;vector-effect:non-scaling-stroke}.market-item.negative polyline{stroke:var(--agro-red)}
+.world-news__footer{position:absolute;right:17px;bottom:129px;padding:0;border:0;z-index:3}.story-dot{cursor:pointer;border:0;padding:0}.story-dot.active{width:22px}
+
+.news-bar{height:58px;background:rgba(3,12,8,.82);border-top-color:var(--agro-line)}.news-track{font-size:16px;font-weight:700}.footer-field{height:82px;opacity:.55}
+.news-modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:30px;background:rgba(1,8,5,.74);backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:.25s}.news-modal.open{opacity:1;pointer-events:auto}.news-modal__card{width:min(720px,94vw);max-height:84vh;overflow:auto;padding:28px;border:1px solid rgba(220,239,228,.2);border-radius:22px;background:#0b2117;box-shadow:0 36px 110px rgba(0,0,0,.6);transform:translateY(12px) scale(.98);transition:.28s}.news-modal.open .news-modal__card{transform:none}.news-modal__close{float:right}.news-modal__meta{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--agro-gold)}.news-modal h2{margin:23px 0 15px;font-size:clamp(25px,3vw,39px);line-height:1.1;letter-spacing:-.04em}.news-modal p{font-size:14px;line-height:1.7;color:#bdcbc4}.news-modal__insight{margin-top:20px;padding:15px;border:1px solid var(--agro-line);border-radius:13px;background:rgba(255,255,255,.035);font-size:12px;color:#dfe9e3}.news-modal__insight strong{display:block;margin-bottom:5px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--agro-gold)}
+.ui-toast{position:fixed;z-index:40;left:50%;bottom:72px;transform:translate(-50%,12px);padding:9px 13px;border:1px solid var(--agro-line);border-radius:10px;background:#102b1d;color:#e5eee9;font-size:11px;opacity:0;pointer-events:none;transition:.22s}.ui-toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1100px){main{grid-template-columns:minmax(0,1fr) minmax(390px,.86fr)}.kpi-nav{grid-template-columns:repeat(3,1fr)}.kpi-jump:nth-child(n+4){display:none}}
+@media(max-width:780px){main{grid-template-columns:1fr;min-height:1200px}.kpi-console{min-height:600px}.world-news{min-height:590px}.world-news__footer{bottom:129px}.app{grid-template-rows:auto auto 58px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
 
@@ -479,15 +537,33 @@ main{
 
   <main>
 
-  <div id="kpis"></div>
+  <section class="kpi-console" aria-label="Indicadores Monte do Pasto">
+    <div class="kpi-toolbar">
+      <div><div class="panel-kicker"><span class="panel-live"></span>Operação em tempo real</div><div class="panel-title">Indicadores Monte do Pasto</div><div class="panel-subtitle" id="kpiStatus">Dados sincronizados automaticamente</div></div>
+      <div class="control-set">
+        <button class="control-button" id="kpiPrev" aria-label="Indicador anterior">‹</button>
+        <button class="control-button" id="kpiPause" aria-label="Pausar indicadores">Ⅱ</button>
+        <button class="control-button" id="kpiNext" aria-label="Indicador seguinte">›</button>
+        <span class="control-count" id="kpiCount">—</span>
+      </div>
+    </div>
+    <div id="kpis"></div>
+    <nav class="kpi-nav" id="kpiNav" aria-label="Escolher indicador"></nav>
+  </section>
 
   <aside class="world-news" aria-label="Notícias agropecuárias internacionais">
     <div class="world-news__header">
-      <div>
-        <div class="world-news__eyebrow">Inteligência global</div>
-        <h2 class="world-news__title">Agro World News</h2>
+      <div class="world-news__top">
+        <div><div class="world-news__eyebrow">Inteligência global</div><h2 class="world-news__title">Notícias & mercados</h2></div>
+        <div class="control-set">
+          <button class="control-button" id="newsPrev" aria-label="Notícia anterior">‹</button>
+          <button class="control-button" id="newsPause" aria-label="Pausar notícias">Ⅱ</button>
+          <button class="control-button" id="newsNext" aria-label="Notícia seguinte">›</button>
+          <div class="world-news__live" id="worldNewsStatus">A atualizar</div>
+        </div>
       </div>
-      <div class="world-news__live" id="worldNewsStatus">A atualizar</div>
+      <nav class="news-filters" id="newsCategories" aria-label="Categorias de notícias"></nav>
+      <nav class="news-filters regions" id="newsRegions" aria-label="Regiões das notícias"></nav>
     </div>
     <article class="editorial-story story-loading" id="worldNewsStory" aria-live="polite">
       <div class="editorial-meta"><span class="editorial-tag">Mercados & pecuária</span><span class="editorial-region">Mundo</span></div>
@@ -496,6 +572,10 @@ main{
       <div class="editorial-source"><strong>Fontes internacionais</strong><span>Atualização automática</span></div>
     </article>
     <div class="world-news__footer"><div class="story-dots" id="worldNewsDots"></div><div class="story-count" id="worldNewsCount">—</div></div>
+    <section class="market-pulse" aria-label="Market Pulse">
+      <div class="market-heading"><span>Market Pulse</span><span>Última leitura disponível</span></div>
+      <div class="market-grid" id="marketPulse"></div>
+    </section>
   </aside>
 
 </main>
@@ -507,11 +587,22 @@ main{
   <div class="news-track" id="newsTrack"></div>
 </div>
 
+<div class="news-modal" id="newsModal" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle">
+  <div class="news-modal__card">
+    <button class="control-button news-modal__close" id="newsModalClose" aria-label="Fechar detalhe">×</button>
+    <div class="news-modal__meta" id="newsModalMeta"></div>
+    <h2 id="newsModalTitle"></h2>
+    <p id="newsModalBody"></p>
+    <div class="news-modal__insight"><strong>Leitura editorial</strong><span id="newsModalInsight"></span></div>
+  </div>
+</div>
+<div class="ui-toast" id="uiToast"></div>
+
 <script>
 /* ================= CONFIG ================= */
 var LAT = 38.219, LON = -7.887;
 
-var MAX_VISIBLE = 2;
+var MAX_VISIBLE = 1;
 var ROTATE_MS = 7000;
 
 var SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcoOLTXvKf6K_4aejdyA7ZK6PObIzqyiLBBOPSehdSkKlxj9_ms0EqJOjT7u2lN11j5DaYIAkcqoy7/pub?output=csv";
@@ -1200,33 +1291,91 @@ function asNum(v){
 var page = 0;
 var cards = [];
 var rotateTimer = null;
+var kpiRotationPaused = false;
+var activeKpiKey = localStorage.getItem("MONTE_ACTIVE_KPI") || "";
+
+function kpiCardKey(card,index){
+  return card.id || card.getAttribute("data-kpi-key") || ("kpi-"+index);
+}
+
+function kpiToast(message){
+  var toast = document.getElementById("uiToast");
+  if(!toast) return;
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(function(){ toast.classList.remove("show"); },1500);
+}
+
+function updateKpiNavigation(){
+  var nav = document.getElementById("kpiNav");
+  var count = document.getElementById("kpiCount");
+  if(count) count.textContent = cards.length ? ((page+1)+" / "+cards.length) : "—";
+  if(!nav) return;
+  nav.innerHTML = cards.map(function(card,index){
+    var titleNode = card.querySelector("h3");
+    var valueNode = card.querySelector(".kpi");
+    var title = titleNode ? titleNode.textContent.replace(/^[^\p{L}\p{N}]+/u,"").trim() : "Indicador";
+    var value = valueNode ? valueNode.textContent.trim().replace(/\s+/g," ") : "Ver detalhe";
+    return "<button class='kpi-jump"+(index===page?" active":"")+"' data-kpi-index='"+index+"'>"+
+      "<span>"+escapeHTML(title)+"</span><b>"+escapeHTML(value)+"</b>"+
+      (index===page ? "<i class='kpi-progress'></i>" : "")+"</button>";
+  }).join("");
+  Array.prototype.forEach.call(nav.querySelectorAll("[data-kpi-index]"),function(button){
+    button.addEventListener("click",function(){ showKpi(Number(button.getAttribute("data-kpi-index")),true); });
+  });
+}
+
+function animateKpiProgress(){
+  var bar = document.querySelector(".kpi-progress");
+  if(!bar || kpiRotationPaused) return;
+  bar.style.setProperty("--rotation-time",ROTATE_MS+"ms");
+  requestAnimationFrame(function(){ bar.classList.add("running"); });
+}
+
+function showKpi(index,manual){
+  if(!cards.length) return;
+  page = (index + cards.length) % cards.length;
+  cards.forEach(function(card,i){ card.classList.toggle("hidden",i!==page); });
+  activeKpiKey = kpiCardKey(cards[page],page);
+  try{ localStorage.setItem("MONTE_ACTIVE_KPI",activeKpiKey); }catch(e){}
+  updateKpiNavigation();
+  restartKpiRotation();
+  if(manual) kpiToast("Indicador "+(page+1)+" de "+cards.length);
+}
+
+function restartKpiRotation(){
+  if(rotateTimer) clearInterval(rotateTimer);
+  rotateTimer = null;
+  animateKpiProgress();
+  if(!kpiRotationPaused && cards.length>1){
+    rotateTimer = setInterval(function(){ showKpi(page+1,false); },ROTATE_MS);
+  }
+}
 
 function refreshCardsAndRotation(){
   cards = Array.prototype.slice.call(document.querySelectorAll(".kpi-card"));
-  startRotation();
+  var remembered = cards.findIndex(function(card,index){ return kpiCardKey(card,index)===activeKpiKey; });
+  if(remembered>=0) page=remembered;
+  else page=Math.min(page,Math.max(0,cards.length-1));
+  showKpi(page,false);
 }
 function rotate(){
-  if (!cards.length) return;
-  var start = page * MAX_VISIBLE;
-  var end = start + MAX_VISIBLE;
-
-  for (var i=0;i<cards.length;i++){
-    var show = (i>=start && i<end);
-    if (show) cards[i].classList.remove("hidden");
-    else cards[i].classList.add("hidden");
-  }
-
-  var totalPages = Math.ceil(cards.length / MAX_VISIBLE);
-  page = (page + 1) % (totalPages || 1);
+  showKpi(page+1,false);
 }
 function startRotation(){
-  if (rotateTimer) clearInterval(rotateTimer);
-  page = 0;
-  rotate();
-  if (cards.length > MAX_VISIBLE){
-    rotateTimer = setInterval(rotate, ROTATE_MS);
-  }
+  refreshCardsAndRotation();
 }
+
+document.getElementById("kpiPrev").addEventListener("click",function(){ showKpi(page-1,true); });
+document.getElementById("kpiNext").addEventListener("click",function(){ showKpi(page+1,true); });
+document.getElementById("kpiPause").addEventListener("click",function(){
+  kpiRotationPaused=!kpiRotationPaused;
+  this.textContent=kpiRotationPaused?"▶":"Ⅱ";
+  this.setAttribute("aria-label",kpiRotationPaused?"Retomar indicadores":"Pausar indicadores");
+  restartKpiRotation();
+  kpiToast(kpiRotationPaused?"Rotação dos indicadores em pausa":"Rotação dos indicadores retomada");
+});
 
 /* ================= KPIs (Google Sheet) ================= */
 function loadKPIs(){
@@ -1262,8 +1411,8 @@ sheetCards.forEach(function(c){
 });
 
       if (!rows.length){
-        grid.innerHTML =
-          "<div class='card kpi-card'>"+
+        if(!grid.querySelector(".kpi-card")) grid.innerHTML =
+          "<div class='card kpi-card sheet-card' id='sheetKpiEmpty'>"+
             "<h3>Sem KPIs ativos</h3>"+
             "<div class='kpi-sub'>Liga KPIs na Google Sheet (active=TRUE).</div>"+
           "</div>";
@@ -1288,7 +1437,7 @@ sheetCards.forEach(function(c){
           }
 
           grid.innerHTML +=
-            "<div class='card kpi-card'>"+
+            "<div class='card kpi-card sheet-card' id='sheetKpi"+i+"' data-kpi-key='sheet-"+i+"'>"+
               "<h3>"+escapeHTML(r.title)+"</h3>"+
               body+
             "</div>";
@@ -1474,6 +1623,19 @@ var WORLD_NEWS_FEEDS = [
   {url:"https://www.beefcentral.com/feed/",region:"Austrália · Mundo",priority:2,translate:true}
 ];
 var WORLD_NEWS_REFRESH_MS = 10*60*1000;
+var WORLD_NEWS_PAUSED = false;
+var WORLD_NEWS_CATEGORY = "Todos";
+var WORLD_NEWS_REGION = "Mundo";
+var WORLD_NEWS_CATEGORIES = ["Todos","Bovinos","Carne","Mercados","Sanidade","Clima","Economia"];
+var WORLD_NEWS_REGIONS = ["Mundo","Portugal","UE","América","Mercosul"];
+var WORLD_NEWS_FALLBACK = [
+  {title:"Conforto, alimentação e eficiência mantêm-se no centro da operação bovina",source:"Painel editorial",summary:"A leitura conjunta do clima, da chuva e dos índices de conforto ajuda a antecipar decisões de maneio e bem-estar.",body:"A monitorização contínua das condições meteorológicas e dos indicadores internos permite atuar antes de uma quebra operacional. Esta nota de reserva mantém o painel útil quando as fontes noticiosas externas estão temporariamente indisponíveis.",insight:"Cruzar esta leitura com IGCB, ISA-5 e chuva acumulada antes da tomada de decisão.",category:"Bovinos",region:"Portugal",date:"Hoje",timestamp:Date.now(),image:"",priority:9,translate:false},
+  {title:"Oferta, custos de alimentação e procura orientam a leitura do mercado",source:"Painel editorial",summary:"O Market Pulse reúne os sinais essenciais para uma leitura rápida das pressões sobre bovinos e carne.",body:"Os mercados agropecuários reagem à disponibilidade de animais, custos de ração, logística, procura e condições meteorológicas. Os valores comerciais devem ser sempre confirmados junto da fonte de negociação.",insight:"Validar preços e variações antes de fechar operações.",category:"Mercados",region:"Mundo",date:"Hoje",timestamp:Date.now()-1,image:"",priority:9,translate:false},
+  {title:"Valor da carcaça e eficiência produtiva ganham peso na análise europeia",source:"Painel editorial",summary:"Qualidade, rendimento, custos logísticos e especificidades de cada mercado devem ser lidos em conjunto.",body:"Uma cotação isolada raramente explica o resultado económico final. A análise operacional deve incorporar rendimento, classificação, transporte e custo de alimentação.",insight:"Acompanhar a margem líquida por lote, não apenas o preço nominal por quilograma.",category:"Carne",region:"UE",date:"Hoje",timestamp:Date.now()-2,image:"",priority:9,translate:false},
+  {title:"Vigilância sanitária continua essencial nos fluxos internacionais de animais",source:"Painel editorial",summary:"Prevenção, rastreabilidade e resposta rápida protegem o efetivo e reduzem interrupções comerciais.",body:"A circulação de animais e produtos reforça a importância de protocolos consistentes de biossegurança, monitorização e comunicação.",insight:"Consultar os alertas oficiais sempre que houver alteração do nível de risco.",category:"Sanidade",region:"Mundo",date:"Hoje",timestamp:Date.now()-3,image:"",priority:9,translate:false},
+  {title:"Clima e disponibilidade de pastagem condicionam oferta e custos pecuários",source:"Painel editorial",summary:"Precipitação, temperatura e qualidade forrageira influenciam retenção, venda e suplementação.",body:"A variabilidade climática transmite-se ao mercado através da pastagem, do preço dos alimentos e do ritmo de saída dos animais.",insight:"Usar cenários de chuva e custo alimentar para preparar alternativas de maneio.",category:"Clima",region:"Mercosul",date:"Hoje",timestamp:Date.now()-4,image:"",priority:9,translate:false},
+  {title:"Câmbio, logística e consumo compõem o radar económico da carne bovina",source:"Painel editorial",summary:"Movimentos cambiais e custos de transporte podem alterar rapidamente a competitividade entre origens.",body:"Para comparar mercados é necessário observar preço local, câmbio, frete, tarifas e perfil de consumo em conjunto.",insight:"Separar a variação operacional da variação cambial nas análises de margem.",category:"Economia",region:"América",date:"Hoje",timestamp:Date.now()-5,image:"",priority:9,translate:false}
+];
 
 function plainText(value){
   var node = document.createElement("div");
@@ -1488,21 +1650,19 @@ function splitHeadline(value){
 }
 function newsCategory(text){
   text = (text || "").toLowerCase();
-  if(/doen|sanit|health|febre|vírus|virus|vacina/.test(text)) return "Sanidade animal";
-  if(/clima|seca|chuva|calor|weather|drought/.test(text)) return "Clima & produção";
-  if(/ração|racao|feed|milho|soja|cereal/.test(text)) return "Alimentação animal";
-  if(/export|import|comércio|comercio|trade|tarifa/.test(text)) return "Comércio mundial";
-  if(/preço|preco|price|mercado|market|futuros/.test(text)) return "Carne & preços";
-  return "Bovinos & pecuária";
+  if(/doen|sanit|health|febre|vírus|virus|vacina/.test(text)) return "Sanidade";
+  if(/clima|seca|chuva|calor|weather|drought/.test(text)) return "Clima";
+  if(/econom|câmbio|cambio|inflação|inflacao|margem|cust/.test(text)) return "Economia";
+  if(/carne|beef|carcaça|carcaca|abate|slaughter/.test(text)) return "Carne";
+  if(/preço|preco|price|mercado|market|futuros|export|import|trade|tarifa/.test(text)) return "Mercados";
+  return "Bovinos";
 }
 function newsRegion(text){
   text = (text || "").toLowerCase();
-  if(/brasil|mercosul|argentin|uruguai|paraguai/.test(text)) return "América do Sul";
-  if(/eua|estados unidos|united states|canad/.test(text)) return "América do Norte";
-  if(/austrália|australia|nova zelândia|new zealand/.test(text)) return "Oceânia";
-  if(/união europeia|uniao europeia|europa|portugal|espanha|frança|franca|irlanda|reino unido/.test(text)) return "Europa";
-  if(/china|japão|japao|índia|india|ásia|asia/.test(text)) return "Ásia";
-  if(/áfrica|africa/.test(text)) return "África";
+  if(/portugal|alentejo|ribatejo|beira|trás-os-montes|açores|acores|madeira/.test(text)) return "Portugal";
+  if(/brasil|mercosul|argentin|uruguai|paraguai/.test(text)) return "Mercosul";
+  if(/eua|estados unidos|united states|canad|méxico|mexico/.test(text)) return "América";
+  if(/união europeia|uniao europeia|europa|espanha|frança|franca|irlanda|reino unido|ue/.test(text)) return "UE";
   return "Mundo";
 }
 function newsDate(value){
@@ -1517,7 +1677,7 @@ function storyImage(item){
   return match ? match[1] : "";
 }
 function isRelevantNews(text){
-  return /agric|agro|pecu|bovin|gado|carne|animal|veterin|ração|racao|cereal|milho|trigo|soja|leite|past|rural|clima|seca|export|import|preço|preco|mercado|cattle|beef|livestock|feed|farm/i.test(text || "");
+  return /pecu|bovin|\bgado\b|carne|animal|veterin|ração|racao|forragem|leite|pastagem|cattle|beef|livestock|feedlot|live cattle|meat price|animal health/i.test(text || "");
 }
 function translateStory(story){
   if(!story.translate) return Promise.resolve(story);
@@ -1542,27 +1702,70 @@ function translateStory(story){
     return story;
   }).catch(function(){ return story; });
 }
+function filteredWorldNews(){
+  var source = WORLD_NEWS.length ? WORLD_NEWS : WORLD_NEWS_FALLBACK;
+  var filtered = source.filter(function(story){
+    return (WORLD_NEWS_CATEGORY==="Todos" || story.category===WORLD_NEWS_CATEGORY) &&
+      (WORLD_NEWS_REGION==="Mundo" || story.region===WORLD_NEWS_REGION);
+  });
+  if(!filtered.length && WORLD_NEWS_CATEGORY!=="Todos"){
+    filtered = source.filter(function(story){ return story.category===WORLD_NEWS_CATEGORY; });
+  }
+  return filtered.length ? filtered : source;
+}
+function renderNewsFilters(){
+  var categories = document.getElementById("newsCategories");
+  var regions = document.getElementById("newsRegions");
+  categories.innerHTML = WORLD_NEWS_CATEGORIES.map(function(value){ return "<button class='filter-button"+(value===WORLD_NEWS_CATEGORY?" active":"")+"' data-news-category='"+value+"'>"+value+"</button>"; }).join("");
+  regions.innerHTML = WORLD_NEWS_REGIONS.map(function(value){ return "<button class='filter-button"+(value===WORLD_NEWS_REGION?" active":"")+"' data-news-region='"+value+"'>"+value+"</button>"; }).join("");
+  Array.prototype.forEach.call(categories.querySelectorAll("[data-news-category]"),function(button){ button.addEventListener("click",function(){ WORLD_NEWS_CATEGORY=button.getAttribute("data-news-category");WORLD_NEWS_INDEX=0;renderNewsFilters();renderWorldNews();restartWorldNewsTimer(); }); });
+  Array.prototype.forEach.call(regions.querySelectorAll("[data-news-region]"),function(button){ button.addEventListener("click",function(){ WORLD_NEWS_REGION=button.getAttribute("data-news-region");WORLD_NEWS_INDEX=0;renderNewsFilters();renderWorldNews();restartWorldNewsTimer(); }); });
+}
+function openWorldNews(){
+  var list=filteredWorldNews();
+  if(!list.length) return;
+  var story=list[WORLD_NEWS_INDEX%list.length];
+  document.getElementById("newsModalMeta").textContent=story.category+" · "+story.region+" · "+story.source+" · "+story.date;
+  document.getElementById("newsModalTitle").textContent=story.title;
+  document.getElementById("newsModalBody").textContent=story.body||story.summary;
+  document.getElementById("newsModalInsight").textContent=story.insight||"Acompanhar a evolução e validar a informação junto da fonte indicada.";
+  document.getElementById("newsModal").classList.add("open");
+  document.getElementById("newsModalClose").focus();
+}
 function renderWorldNews(){
-  if(!WORLD_NEWS.length) return;
-  var story = WORLD_NEWS[WORLD_NEWS_INDEX];
+  var list=filteredWorldNews();
+  if(!list.length) return;
+  WORLD_NEWS_INDEX=(WORLD_NEWS_INDEX+list.length)%list.length;
+  var story = list[WORLD_NEWS_INDEX];
   var storyEl = document.getElementById("worldNewsStory");
   var dotsEl = document.getElementById("worldNewsDots");
   var titleClass = story.title.length > 145 ? "title-very-long" : (story.title.length > 90 ? "title-long" : "");
   storyEl.classList.remove("story-loading","has-image");
   if(story.image) storyEl.classList.add("has-image");
   storyEl.innerHTML =
+    "<div class='featured-now'><span>Em destaque agora</span><span>"+(WORLD_NEWS_INDEX+1)+" / "+list.length+"</span></div>"+
     (story.image ? "<img class='editorial-image' src='"+escapeHTML(story.image)+"' alt='' loading='eager' referrerpolicy='no-referrer'>" : "")+
     "<div class='editorial-meta'><span class='editorial-tag'>"+escapeHTML(story.category)+"</span><span class='editorial-region'>"+escapeHTML(story.region)+"</span></div>"+
     "<h2 class='"+titleClass+"'>"+escapeHTML(story.title)+"</h2>"+
     "<p class='editorial-summary'>"+escapeHTML(story.summary)+"</p>"+
-    "<div class='editorial-source'><strong>"+escapeHTML(story.source)+"</strong><span>"+escapeHTML(story.date)+"</span></div>";
-  dotsEl.innerHTML = WORLD_NEWS.map(function(_,i){ return "<span class='story-dot"+(i===WORLD_NEWS_INDEX?" active":"")+"'></span>"; }).join("");
-  document.getElementById("worldNewsCount").textContent = (WORLD_NEWS_INDEX+1)+" / "+WORLD_NEWS.length;
+    "<div class='editorial-source'><strong>"+escapeHTML(story.source)+"</strong><span>"+escapeHTML(story.date)+" · <span class='open-detail'>Abrir detalhe ↗</span></span></div>";
+  storyEl.onclick=openWorldNews;
+  storyEl.onkeydown=function(event){ if(event.key==="Enter"||event.key===" "){event.preventDefault();openWorldNews();} };
+  storyEl.setAttribute("tabindex","0");storyEl.setAttribute("role","button");
+  dotsEl.innerHTML = list.slice(0,8).map(function(_,i){ return "<button class='story-dot"+(i===WORLD_NEWS_INDEX?" active":"")+"' data-story-index='"+i+"' aria-label='Notícia "+(i+1)+"'></button>"; }).join("");
+  Array.prototype.forEach.call(dotsEl.querySelectorAll("[data-story-index]"),function(button){ button.addEventListener("click",function(event){event.stopPropagation();WORLD_NEWS_INDEX=Number(button.getAttribute("data-story-index"));renderWorldNews();restartWorldNewsTimer();}); });
+  document.getElementById("worldNewsCount").textContent = "";
 }
 function rotateWorldNews(){
-  if(WORLD_NEWS.length < 2) return;
-  WORLD_NEWS_INDEX = (WORLD_NEWS_INDEX + 1) % WORLD_NEWS.length;
+  var list=filteredWorldNews();
+  if(list.length < 2) return;
+  WORLD_NEWS_INDEX = (WORLD_NEWS_INDEX + 1) % list.length;
   renderWorldNews();
+}
+function restartWorldNewsTimer(){
+  if(WORLD_NEWS_TIMER) clearInterval(WORLD_NEWS_TIMER);
+  WORLD_NEWS_TIMER=null;
+  if(!WORLD_NEWS_PAUSED && filteredWorldNews().length>1) WORLD_NEWS_TIMER=setInterval(rotateWorldNews,8500);
 }
 function loadWorldNews(){
   var requests = WORLD_NEWS_FEEDS.map(function(feed){
@@ -1587,7 +1790,7 @@ function loadWorldNews(){
           var context = parsed.title+" "+description;
           if(!isRelevantNews(context)) return;
           if(!description || description.length < 45) description = "Atualidade relevante para a agricultura, a produção pecuária e os mercados agroalimentares.";
-          stories.push({title:parsed.title,source:parsed.source,summary:description,category:newsCategory(context),region:feed.region,date:newsDate(item.pubDate),timestamp:new Date(item.pubDate).getTime()||0,image:storyImage(item),priority:feed.priority,translate:feed.translate});
+          stories.push({title:parsed.title,source:parsed.source,summary:description,body:description,insight:"Confirmar a informação na fonte especializada antes de tomar decisões operacionais ou comerciais.",category:newsCategory(context),region:newsRegion(context),date:newsDate(item.pubDate),timestamp:new Date(item.pubDate).getTime()||0,image:storyImage(item),priority:feed.priority,translate:feed.translate});
         });
       });
       stories.sort(function(a,b){ return a.priority-b.priority || b.timestamp-a.timestamp; });
@@ -1598,23 +1801,37 @@ function loadWorldNews(){
       return Promise.all(portuguese.concat(international).map(translateStory));
     })
     .then(function(stories){
-      WORLD_NEWS = stories;
-      if(!WORLD_NEWS.length) throw new Error("empty news");
+      WORLD_NEWS = stories.length ? stories : WORLD_NEWS_FALLBACK.slice();
       WORLD_NEWS_INDEX = 0;
       document.getElementById("worldNewsStatus").textContent = "Atualizado";
+      renderNewsFilters();
       renderWorldNews();
-      if(WORLD_NEWS_TIMER) clearInterval(WORLD_NEWS_TIMER);
-      WORLD_NEWS_TIMER = setInterval(rotateWorldNews,12000);
+      restartWorldNewsTimer();
     })
     .catch(function(){
-      document.getElementById("worldNewsStatus").textContent = "A tentar novamente";
-      document.getElementById("worldNewsStory").innerHTML =
-        "<div class='editorial-meta'><span class='editorial-tag'>Radar internacional</span><span class='editorial-region'>Mundo</span></div>"+
-        "<h2>Ligação às fontes internacionais temporariamente indisponível</h2>"+
-        "<p class='editorial-summary'>O painel mantém os indicadores operacionais ativos e volta a tentar recolher notícias automaticamente na próxima atualização.</p>"+
-        "<div class='editorial-source'><strong>Agro World News</strong><span>Atualização automática</span></div>";
+      WORLD_NEWS=WORLD_NEWS_FALLBACK.slice();
+      WORLD_NEWS_INDEX=0;
+      document.getElementById("worldNewsStatus").textContent = "Reserva editorial";
+      renderNewsFilters();renderWorldNews();restartWorldNewsTimer();
     });
 }
+
+function renderMarketPulse(){
+  var data=[
+    {name:"Bovino UE",value:"—",change:"aguarda feed",negative:false,points:"0,10 20,10 40,10 60,10 80,10 100,10"},
+    {name:"Carne global",value:"—",change:"aguarda feed",negative:false,points:"0,10 20,10 40,10 60,10 80,10 100,10"},
+    {name:"Custo ração",value:"—",change:"aguarda feed",negative:false,points:"0,10 20,10 40,10 60,10 80,10 100,10"}
+  ];
+  document.getElementById("marketPulse").innerHTML=data.map(function(item){return "<div class='market-item"+(item.negative?" negative":"")+"'><div class='market-name'>"+item.name+"</div><div class='market-row'><b>"+item.value+"</b><span class='market-change'>"+item.change+"</span></div><svg class='sparkline' viewBox='0 0 100 20' preserveAspectRatio='none' aria-hidden='true'><polyline points='"+item.points+"'/></svg></div>";}).join("");
+}
+
+document.getElementById("newsPrev").addEventListener("click",function(){WORLD_NEWS_INDEX--;renderWorldNews();restartWorldNewsTimer();});
+document.getElementById("newsNext").addEventListener("click",function(){WORLD_NEWS_INDEX++;renderWorldNews();restartWorldNewsTimer();});
+document.getElementById("newsPause").addEventListener("click",function(){WORLD_NEWS_PAUSED=!WORLD_NEWS_PAUSED;this.textContent=WORLD_NEWS_PAUSED?"▶":"Ⅱ";this.setAttribute("aria-label",WORLD_NEWS_PAUSED?"Retomar notícias":"Pausar notícias");restartWorldNewsTimer();kpiToast(WORLD_NEWS_PAUSED?"Notícias em pausa":"Notícias em rotação");});
+document.getElementById("newsModalClose").addEventListener("click",function(){document.getElementById("newsModal").classList.remove("open");document.getElementById("worldNewsStory").focus();});
+document.getElementById("newsModal").addEventListener("click",function(event){if(event.target===this)this.classList.remove("open");});
+document.addEventListener("keydown",function(event){if(event.key==="Escape")document.getElementById("newsModal").classList.remove("open");});
+renderMarketPulse();renderNewsFilters();WORLD_NEWS=WORLD_NEWS_FALLBACK.slice();renderWorldNews();restartWorldNewsTimer();
 
 /* ================= INIT ================= */
 updateDayPeriod();
