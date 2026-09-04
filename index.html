@@ -496,7 +496,11 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
 .market-pulse{padding:10px 16px 13px;border-top:1px solid var(--agro-line)}.market-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:8px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--agro-muted)}.market-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.market-item{padding:7px 8px;border:1px solid rgba(255,255,255,.05);border-radius:10px;background:rgba(255,255,255,.03)}.market-name{font-size:7px;font-weight:700;text-transform:uppercase;color:var(--agro-muted);white-space:nowrap}.market-row{display:flex;align-items:end;justify-content:space-between;margin-top:3px}.market-row b{font-size:11px}.market-change{font-size:8px;font-weight:800;color:var(--agro-green)}.market-item.negative .market-change{color:var(--agro-red)}.sparkline{width:100%;height:16px;margin-top:3px}.sparkline polyline{fill:none;stroke:var(--agro-green);stroke-width:2;vector-effect:non-scaling-stroke}.market-item.negative polyline{stroke:var(--agro-red)}
 .world-news__footer{position:absolute;right:17px;bottom:129px;padding:0;border:0;z-index:3}.story-dot{cursor:pointer;border:0;padding:0}.story-dot.active{width:22px}
 
-.news-bar{height:58px;background:rgba(3,12,8,.82);border-top-color:var(--agro-line)}.news-track{font-size:16px;font-weight:700}.footer-field{height:82px;opacity:.55}
+.operational-state{display:flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(117,211,151,.22);border-radius:999px;background:rgba(117,211,151,.08);color:#b8ecc8;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}.operational-state::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--agro-green);box-shadow:0 0 12px var(--agro-green)}.operational-state.warning{color:#f3d99d;border-color:rgba(219,185,103,.35);background:rgba(219,185,103,.09)}.operational-state.warning::before{background:var(--agro-gold)}.operational-state.critical{color:#ffc0b9;border-color:rgba(255,124,109,.36);background:rgba(255,124,109,.1)}.operational-state.critical::before{background:var(--agro-red)}
+.clock-stack{display:flex;align-items:center;gap:12px}.clock-meta{text-align:right}.clock-date{margin-top:5px;color:rgba(244,246,243,.62);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.kpi-console #kpis .card::after{content:"";position:absolute;left:0;top:18%;bottom:18%;width:3px;border-radius:3px;background:rgba(219,185,103,.35);opacity:.8}.kpi-console #kpis .card[data-signal="good"]::after{background:var(--agro-green);box-shadow:0 0 18px rgba(117,211,151,.5)}.kpi-console #kpis .card[data-signal="warning"]::after{background:var(--agro-gold);box-shadow:0 0 18px rgba(219,185,103,.45)}.kpi-console #kpis .card[data-signal="critical"]::after{background:var(--agro-red);box-shadow:0 0 22px rgba(255,124,109,.55)}.kpi-console #kpis .card[data-signal="critical"]{background:radial-gradient(650px 380px at 0 50%,rgba(134,34,26,.15),transparent 70%),rgba(255,255,255,.018)}
+.radar-value{font-size:15px!important;letter-spacing:-.02em}.radar-status{font-size:8px;font-weight:800;color:var(--agro-muted);white-space:nowrap}.market-item.good .market-change{color:var(--agro-green)}.market-item.warning .market-change{color:var(--agro-gold)}.market-item.critical .market-change{color:var(--agro-red)}
+.news-bar{height:58px;background:rgba(3,12,8,.88);border-top-color:var(--agro-line);display:flex}.news-label{align-self:stretch;display:flex;align-items:center;padding:0 22px;background:var(--agro-gold);color:#172018;font-size:10px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;white-space:nowrap;z-index:2}.news-track{display:flex;width:max-content;padding-left:24px;font-size:16px;font-weight:700;animation:news-scroll 58s linear infinite}.footer-field{height:28px;bottom:58px;background-size:auto 38px;opacity:.75}@keyframes news-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .news-modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:30px;background:rgba(1,8,5,.74);backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:.25s}.news-modal.open{opacity:1;pointer-events:auto}.news-modal__card{width:min(720px,94vw);max-height:84vh;overflow:auto;padding:28px;border:1px solid rgba(220,239,228,.2);border-radius:22px;background:#0b2117;box-shadow:0 36px 110px rgba(0,0,0,.6);transform:translateY(12px) scale(.98);transition:.28s}.news-modal.open .news-modal__card{transform:none}.news-modal__close{float:right}.news-modal__meta{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--agro-gold)}.news-modal h2{margin:23px 0 15px;font-size:clamp(25px,3vw,39px);line-height:1.1;letter-spacing:-.04em}.news-modal p{font-size:14px;line-height:1.7;color:#bdcbc4}.news-modal__insight{margin-top:20px;padding:15px;border:1px solid var(--agro-line);border-radius:13px;background:rgba(255,255,255,.035);font-size:12px;color:#dfe9e3}.news-modal__insight strong{display:block;margin-bottom:5px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--agro-gold)}
 .ui-toast{position:fixed;z-index:40;left:50%;bottom:72px;transform:translate(-50%,12px);padding:9px 13px;border:1px solid var(--agro-line);border-radius:10px;background:#102b1d;color:#e5eee9;font-size:11px;opacity:0;pointer-events:none;transition:.22s}.ui-toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:1100px){main{grid-template-columns:minmax(0,1fr) minmax(390px,.86fr)}.kpi-nav{grid-template-columns:repeat(3,1fr)}.kpi-jump:nth-child(n+4){display:none}}
@@ -532,7 +536,7 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
       </div>
     </div>
 
-    <div class="clock" id="clock">--:--</div>
+    <div class="clock-stack"><div class="clock-meta"><div class="clock" id="clock">--:--</div><div class="clock-date" id="clockDate">---</div></div></div>
   </header>
 
   <main>
@@ -541,6 +545,7 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
     <div class="kpi-toolbar">
       <div><div class="panel-kicker"><span class="panel-live"></span>Operação em tempo real</div><div class="panel-title">Indicadores Monte do Pasto</div><div class="panel-subtitle" id="kpiStatus">Dados sincronizados automaticamente</div></div>
       <div class="control-set">
+        <button class="operational-state" id="operationalState" aria-label="Abrir alerta prioritário">A sincronizar</button>
         <button class="control-button" id="kpiPrev" aria-label="Indicador anterior">‹</button>
         <button class="control-button" id="kpiPause" aria-label="Pausar indicadores">Ⅱ</button>
         <button class="control-button" id="kpiNext" aria-label="Indicador seguinte">›</button>
@@ -573,7 +578,7 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
     </article>
     <div class="world-news__footer"><div class="story-dots" id="worldNewsDots"></div><div class="story-count" id="worldNewsCount">—</div></div>
     <section class="market-pulse" aria-label="Market Pulse">
-      <div class="market-heading"><span>Market Pulse</span><span>Última leitura disponível</span></div>
+      <div class="market-heading"><span>Radar da exploração</span><span id="radarUpdated">Dados reais do painel</span></div>
       <div class="market-grid" id="marketPulse"></div>
     </section>
   </aside>
@@ -584,6 +589,7 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
 <div class="footer-field" aria-hidden="true"></div>
 
 <div class="news-bar">
+  <div class="news-label">Comunicações</div>
   <div class="news-track" id="newsTrack"></div>
 </div>
 
@@ -643,6 +649,8 @@ function tick(){
   var hh = ("0"+d.getHours()).slice(-2);
   var mm = ("0"+d.getMinutes()).slice(-2);
   document.getElementById("clock").textContent = hh+":"+mm;
+  var dateEl = document.getElementById("clockDate");
+  if(dateEl) dateEl.textContent = d.toLocaleDateString("pt-PT",{weekday:"short",day:"2-digit",month:"short"}).replace(/\./g,"");
 }
 tick();
 setInterval(tick, 30000);
@@ -1293,6 +1301,8 @@ var cards = [];
 var rotateTimer = null;
 var kpiRotationPaused = false;
 var activeKpiKey = localStorage.getItem("MONTE_ACTIVE_KPI") || "";
+var cardsSincePriority = 0;
+var tvPriorityPrimed = false;
 
 function kpiCardKey(card,index){
   return card.id || card.getAttribute("data-kpi-key") || ("kpi-"+index);
@@ -1333,6 +1343,54 @@ function animateKpiProgress(){
   requestAnimationFrame(function(){ bar.classList.add("running"); });
 }
 
+function decorateKpiCards(){
+  cards.forEach(function(card){
+    var text=(card.textContent||"").toLowerCase();
+    var signal="neutral";
+    if(text.indexOf("🔴")>=0 || /stress crítico|intervenção urgente|alto risco/.test(text)) signal="critical";
+    else if(text.indexOf("🟡")>=0 || /stress ambiental|alerta|monitorizar/.test(text)) signal="warning";
+    else if(text.indexOf("🟢")>=0 || /conforto ótimo|recuperação total|condições ótimas/.test(text)) signal="good";
+    card.setAttribute("data-signal",signal);
+  });
+}
+
+function metricFromCard(id,titlePart){
+  var card=id?document.getElementById(id):null;
+  if(!card && titlePart){
+    card=cards.find(function(item){var h=item.querySelector("h3");return h && h.textContent.toLowerCase().indexOf(titlePart.toLowerCase())>=0;});
+  }
+  if(!card) return {value:"—",signal:"warning"};
+  var value=card.querySelector(".kpi");
+  return {value:value?value.textContent.trim().replace(/\s+/g," "):"—",signal:card.getAttribute("data-signal")||"neutral"};
+}
+
+function refreshOperationalRadar(){
+  var target=document.getElementById("marketPulse");
+  if(!target) return;
+  var igcb=metricFromCard("thiCard"),rain=metricFromCard("rainKpiCard"),stock=metricFromCard(null,"stock animais");
+  var igcbNumber=parseFloat(igcb.value.replace(",","."));
+  var stateEl=document.getElementById("operationalState");
+  var criticalCards=cards.filter(function(card){return card.getAttribute("data-signal")==="critical";});
+  var warningCards=cards.filter(function(card){return card.getAttribute("data-signal")==="warning";});
+  var label="Operação estável",stateClass="";
+  if(criticalCards.length){label=criticalCards.length+" alerta"+(criticalCards.length>1?"s":"")+" crítico"+(criticalCards.length>1?"s":"");stateClass="critical";}
+  else if(warningCards.length || (isFinite(igcbNumber) && igcbNumber<70)){label=(warningCards.length||1)+" ponto"+((warningCards.length||1)>1?"s":"")+" sob vigilância";stateClass="warning";}
+  if(stateEl){stateEl.className="operational-state "+stateClass;stateEl.textContent=label;}
+  var metrics=[
+    {name:"Conforto bovino",value:igcb.value,detail:isFinite(igcbNumber)?igcbLevel(igcbNumber).txt:"A sincronizar",signal:igcb.signal},
+    {name:"Chuva anual",value:rain.value,detail:"desde 1 de janeiro",signal:rain.signal},
+    {name:"Efetivo atual",value:stock.value,detail:"animais em stock",signal:stock.signal}
+  ];
+  target.innerHTML=metrics.map(function(item){return "<div class='market-item "+item.signal+"'><div class='market-name'>"+escapeHTML(item.name)+"</div><div class='market-row'><b class='radar-value'>"+escapeHTML(item.value)+"</b></div><div class='radar-status'>"+escapeHTML(item.detail)+"</div></div>";}).join("");
+  var updated=document.getElementById("radarUpdated");
+  if(updated) updated.textContent="Atualizado às "+new Date().toLocaleTimeString("pt-PT",{hour:"2-digit",minute:"2-digit"});
+}
+
+function handleKpiImageError(image){
+  var card=image.closest(".kpi-card");
+  if(card){card.remove();refreshCardsAndRotation();kpiToast("Indicador visual indisponível foi ignorado");}
+}
+
 function showKpi(index,manual){
   if(!cards.length) return;
   page = (index + cards.length) % cards.length;
@@ -1344,21 +1402,38 @@ function showKpi(index,manual){
   if(manual) kpiToast("Indicador "+(page+1)+" de "+cards.length);
 }
 
+function advanceKpiForTV(){
+  var criticalIndex=cards.findIndex(function(card){return card.getAttribute("data-signal")==="critical";});
+  if(criticalIndex>=0 && page!==criticalIndex && cardsSincePriority>=2){
+    cardsSincePriority=0;
+    showKpi(criticalIndex,false);
+    return;
+  }
+  var next=(page+1)%cards.length;
+  if(next===criticalIndex) cardsSincePriority=0;
+  else cardsSincePriority++;
+  showKpi(next,false);
+}
+
 function restartKpiRotation(){
   if(rotateTimer) clearInterval(rotateTimer);
   rotateTimer = null;
   animateKpiProgress();
   if(!kpiRotationPaused && cards.length>1){
-    rotateTimer = setInterval(function(){ showKpi(page+1,false); },ROTATE_MS);
+    rotateTimer = setInterval(advanceKpiForTV,ROTATE_MS);
   }
 }
 
 function refreshCardsAndRotation(){
   cards = Array.prototype.slice.call(document.querySelectorAll(".kpi-card"));
+  decorateKpiCards();
+  var firstCritical=cards.findIndex(function(card){return card.getAttribute("data-signal")==="critical";});
   var remembered = cards.findIndex(function(card,index){ return kpiCardKey(card,index)===activeKpiKey; });
   if(remembered>=0) page=remembered;
   else page=Math.min(page,Math.max(0,cards.length-1));
+  if(firstCritical>=0 && !tvPriorityPrimed){page=firstCritical;tvPriorityPrimed=true;}
   showKpi(page,false);
+  refreshOperationalRadar();
 }
 function rotate(){
   showKpi(page+1,false);
@@ -1375,6 +1450,13 @@ document.getElementById("kpiPause").addEventListener("click",function(){
   this.setAttribute("aria-label",kpiRotationPaused?"Retomar indicadores":"Pausar indicadores");
   restartKpiRotation();
   kpiToast(kpiRotationPaused?"Rotação dos indicadores em pausa":"Rotação dos indicadores retomada");
+});
+document.getElementById("operationalState").addEventListener("click",function(){
+  var criticalIndex=cards.findIndex(function(card){return card.getAttribute("data-signal")==="critical";});
+  var warningIndex=cards.findIndex(function(card){return card.getAttribute("data-signal")==="warning";});
+  var target=criticalIndex>=0?criticalIndex:warningIndex;
+  if(target>=0) showKpi(target,true);
+  else kpiToast("Não existem alertas operacionais ativos");
 });
 
 /* ================= KPIs (Google Sheet) ================= */
@@ -1393,13 +1475,23 @@ function loadKPIs(){
           order: asNum(r.order)
         };
       }).filter(function(r){
-        return r.active && r.type && r.title;
+        /* Cards exclusivamente visuais ficam fora da rotação de TV: se a imagem
+           externa falhar, produzem um ecrã vazio sem valor operacional. */
+        var hasUsefulContent = (r.type === "text" || r.type === "number") ? !!r.value : !!r.imageUrl;
+        return r.active && r.type && r.title && r.type !== "image" && hasUsefulContent;
       });
 
       rows.sort(function(a,b){
         var ao = isFinite(a.order) ? a.order : 999999;
         var bo = isFinite(b.order) ? b.order : 999999;
         return ao - bo;
+      });
+      var seenKpiTitles={};
+      rows=rows.filter(function(row){
+        var key=row.title.toLowerCase();
+        if(seenKpiTitles[key]) return false;
+        seenKpiTitles[key]=true;
+        return true;
       });
 
       var grid = document.getElementById("kpis");
@@ -1423,7 +1515,7 @@ sheetCards.forEach(function(c){
 
           if (r.type === "image"){
             body = r.imageUrl
-              ? "<div class='kpi-image'><img src='"+r.imageUrl+"' alt=''></div>"
+              ? "<div class='kpi-image'><img src='"+escapeHTML(r.imageUrl)+"' alt='"+escapeHTML(r.title)+"' onerror='handleKpiImageError(this)'></div>"
               : "<div class='kpi-sub'>Sem imageUrl</div>";
           } else if (r.type === "number"){
             body = "<div class='kpi'>"+(escapeHTML(r.value)||"--")+" <span>"+escapeHTML(r.unit||"")+"</span></div>";
@@ -1474,9 +1566,10 @@ function loadNews(){
       });
 
       var track = document.getElementById("newsTrack");
-      track.innerHTML = rows.length
+      var tickerItems = rows.length
         ? rows.map(function(x){ return "<span class='news-item'>"+escapeHTML(x.text)+"</span>"; }).join("")
         : "<span class='news-item'>Sem comunicações ativas</span>";
+      track.innerHTML = tickerItems+tickerItems;
 
       track.style.animation = "none";
       track.offsetHeight;
@@ -1679,6 +1772,13 @@ function storyImage(item){
 function isRelevantNews(text){
   return /pecu|bovin|\bgado\b|carne|animal|veterin|ração|racao|forragem|leite|pastagem|cattle|beef|livestock|feedlot|live cattle|meat price|animal health/i.test(text || "");
 }
+function looksEnglish(text){
+  return /\b(the|and|with|for|latest|research|market|cattle|beef|livestock|management|prices)\b/i.test(text||"");
+}
+function googleTranslateText(value){
+  var url="https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pt&dt=t&q="+encodeURIComponent(value||"");
+  return fetch(url).then(function(r){if(!r.ok)throw new Error("translation");return r.json();}).then(function(data){return Array.isArray(data&&data[0])?data[0].map(function(part){return part[0]||"";}).join(""):"";});
+}
 function translateStory(story){
   if(!story.translate) return Promise.resolve(story);
   var cacheKey = "MONTE_NEWS_PT_"+story.title;
@@ -1686,21 +1786,22 @@ function translateStory(story){
     var cached = localStorage.getItem(cacheKey);
     if(cached){
       var saved = JSON.parse(cached);
-      story.title = saved.title;
-      story.summary = saved.summary;
-      return Promise.resolve(story);
+      if(saved.title && !looksEnglish(saved.title)){
+        story.title = saved.title;
+        story.summary = saved.summary;
+        story.body = saved.summary;
+        return Promise.resolve(story);
+      }
     }
   }catch(e){}
-  var combined = story.title+" ||| "+story.summary.slice(0,280);
-  var url = "https://api.mymemory.translated.net/get?q="+encodeURIComponent(combined)+"&langpair=en|pt-PT";
-  return fetch(url).then(function(r){ return r.json(); }).then(function(data){
-    var translated = data && data.responseData ? plainText(data.responseData.translatedText) : "";
-    var parts = translated.split(" ||| ");
-    if(parts[0]) story.title = parts[0];
-    if(parts[1]) story.summary = parts.slice(1).join(" ||| ");
+  var originalTitle=story.title,originalSummary=story.summary;
+  return Promise.all([googleTranslateText(originalTitle),googleTranslateText(originalSummary.slice(0,520))]).then(function(parts){
+    if(parts[0]) story.title=plainText(parts[0]);
+    if(parts[1]) story.summary=plainText(parts[1]);
+    story.body=story.summary;
     try{ localStorage.setItem(cacheKey,JSON.stringify({title:story.title,summary:story.summary})); }catch(e){}
     return story;
-  }).catch(function(){ return story; });
+  }).catch(function(){story.title=originalTitle;story.summary=originalSummary;return story;});
 }
 function filteredWorldNews(){
   var source = WORLD_NEWS.length ? WORLD_NEWS : WORLD_NEWS_FALLBACK;
@@ -1748,10 +1849,9 @@ function renderWorldNews(){
     "<div class='editorial-meta'><span class='editorial-tag'>"+escapeHTML(story.category)+"</span><span class='editorial-region'>"+escapeHTML(story.region)+"</span></div>"+
     "<h2 class='"+titleClass+"'>"+escapeHTML(story.title)+"</h2>"+
     "<p class='editorial-summary'>"+escapeHTML(story.summary)+"</p>"+
-    "<div class='editorial-source'><strong>"+escapeHTML(story.source)+"</strong><span>"+escapeHTML(story.date)+" · <span class='open-detail'>Abrir detalhe ↗</span></span></div>";
-  storyEl.onclick=openWorldNews;
-  storyEl.onkeydown=function(event){ if(event.key==="Enter"||event.key===" "){event.preventDefault();openWorldNews();} };
-  storyEl.setAttribute("tabindex","0");storyEl.setAttribute("role","button");
+    "<div class='editorial-source'><strong>"+escapeHTML(story.source)+"</strong><span>"+escapeHTML(story.date)+" · rotação automática</span></div>";
+  storyEl.onclick=null;storyEl.onkeydown=null;
+  storyEl.removeAttribute("tabindex");storyEl.removeAttribute("role");
   dotsEl.innerHTML = list.slice(0,8).map(function(_,i){ return "<button class='story-dot"+(i===WORLD_NEWS_INDEX?" active":"")+"' data-story-index='"+i+"' aria-label='Notícia "+(i+1)+"'></button>"; }).join("");
   Array.prototype.forEach.call(dotsEl.querySelectorAll("[data-story-index]"),function(button){ button.addEventListener("click",function(event){event.stopPropagation();WORLD_NEWS_INDEX=Number(button.getAttribute("data-story-index"));renderWorldNews();restartWorldNewsTimer();}); });
   document.getElementById("worldNewsCount").textContent = "";
@@ -1801,6 +1901,7 @@ function loadWorldNews(){
       return Promise.all(portuguese.concat(international).map(translateStory));
     })
     .then(function(stories){
+      stories=stories.filter(function(story){return !story.translate || !looksEnglish(story.title);});
       WORLD_NEWS = stories.length ? stories : WORLD_NEWS_FALLBACK.slice();
       WORLD_NEWS_INDEX = 0;
       document.getElementById("worldNewsStatus").textContent = "Atualizado";
@@ -1817,12 +1918,7 @@ function loadWorldNews(){
 }
 
 function renderMarketPulse(){
-  var data=[
-    {name:"Bovino UE",value:"—",change:"aguarda feed",negative:false,points:"0,10 20,10 40,10 60,10 80,10 100,10"},
-    {name:"Carne global",value:"—",change:"aguarda feed",negative:false,points:"0,10 20,10 40,10 60,10 80,10 100,10"},
-    {name:"Custo ração",value:"—",change:"aguarda feed",negative:false,points:"0,10 20,10 40,10 60,10 80,10 100,10"}
-  ];
-  document.getElementById("marketPulse").innerHTML=data.map(function(item){return "<div class='market-item"+(item.negative?" negative":"")+"'><div class='market-name'>"+item.name+"</div><div class='market-row'><b>"+item.value+"</b><span class='market-change'>"+item.change+"</span></div><svg class='sparkline' viewBox='0 0 100 20' preserveAspectRatio='none' aria-hidden='true'><polyline points='"+item.points+"'/></svg></div>";}).join("");
+  refreshOperationalRadar();
 }
 
 document.getElementById("newsPrev").addEventListener("click",function(){WORLD_NEWS_INDEX--;renderWorldNews();restartWorldNewsTimer();});
