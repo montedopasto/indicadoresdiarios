@@ -508,6 +508,12 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
 @media(max-width:1100px){main{grid-template-columns:minmax(0,1fr) minmax(390px,.86fr)}.kpi-nav{grid-template-columns:repeat(3,1fr)}.kpi-jump:nth-child(n+4){display:none}}
 @media(max-width:780px){main{grid-template-columns:1fr;min-height:1200px}.kpi-console{min-height:600px}.world-news{min-height:590px}.world-news__footer{bottom:129px}.app{grid-template-rows:auto auto 58px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+/* Modo TV: reduz composição gráfica contínua em browsers com pouca memória/GPU. */
+*{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.fog,.sunGlow,.pill{animation:none!important}
+.fog{opacity:.18}.sunGlow{opacity:.48}
+body.periodo-manha,body.periodo-dia,body.periodo-por,body.periodo-noite{filter:none!important}
+.news-track,.drop{will-change:transform}
 </style>
 </head>
 
@@ -619,6 +625,8 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
 <script>
 /* ================= CONFIG ================= */
 var LAT = 38.219, LON = -7.887;
+var TV_STABILITY_MODE = true;
+var TV_LAST_DATA_SUCCESS = Date.now();
 
 var MAX_VISIBLE = 1;
 var ROTATE_MS = 7000;
@@ -1106,6 +1114,7 @@ function addSun(){
 }
 function addRainDrops(count){
   var fx = document.getElementById("fx");
+  count = Math.min(count, TV_STABILITY_MODE ? 28 : 160);
   for (var i=0;i<count;i++){
     var d = document.createElement("div");
     d.className = "drop";
@@ -1147,6 +1156,7 @@ function updateWeather(){
   fetch(WEATHER_URL)
     .then(function(r){ return r.json(); })
     .then(function(d){
+      TV_LAST_DATA_SUCCESS=Date.now();
       var cw = d.current_weather || {};
       var temp = Math.round(cw.temperature || 0);
       var code = (cw.weathercode!==undefined ? cw.weathercode : 3);
@@ -1547,6 +1557,7 @@ function loadKPIs(){
   fetch(SHEET_URL, { cache: "no-store" })
     .then(function(r){ return r.text(); })
     .then(function(t){
+      TV_LAST_DATA_SUCCESS=Date.now();
       var rows = parseCSV(t).map(function(r){
         return {
           active: asBool(r.active),
@@ -1638,6 +1649,7 @@ function loadNews(){
   fetch(NEWS_SHEET_URL, { cache: "no-store" })
     .then(function(r){ return r.text(); })
     .then(function(t){
+      TV_LAST_DATA_SUCCESS=Date.now();
       var rows = parseCSV(t).map(function(r){
         return { active: asBool(r.active), order: asNum(r.order), text: (r.text||"").trim() };
       }).filter(function(r){ return r.active && r.text; });
@@ -1775,18 +1787,17 @@ setTimeout(refreshCardsAndRotation, 50);
   });
 }
 
-/* ================= SCHEDULE ================= */
-function scheduleHourly(fn){
-  fn();
-  var now = new Date();
-  var msToNextHour =
-    (60 - now.getMinutes())*60*1000 - now.getSeconds()*1000 - now.getMilliseconds();
-  if (msToNextHour < 1000) msToNextHour = 1000;
-
-  setTimeout(function(){
-    fn();
-    setInterval(fn, 5*60*1000);
-  }, msToNextHour);
+/* ================= SCHEDULE TV ================= */
+function scheduleStable(fn,interval,delay){
+  var running=false;
+  function run(){
+    if(running) return;
+    running=true;
+    try{fn();}catch(e){}
+    setTimeout(function(){running=false;},30000);
+  }
+  setTimeout(run,delay||0);
+  setInterval(run,interval);
 }
 
 /* ================= AGRO WORLD NEWS ================= */
@@ -1799,7 +1810,7 @@ var WORLD_NEWS_FEEDS = [
   {url:"https://www.agriculturaemar.com/feed/",region:"Portugal",priority:1,translate:false},
   {url:"https://www.beefcentral.com/feed/",region:"Austrália · Mundo",priority:2,translate:true}
 ];
-var WORLD_NEWS_REFRESH_MS = 10*60*1000;
+var WORLD_NEWS_REFRESH_MS = 30*60*1000;
 var WORLD_NEWS_PAUSED = false;
 var WORLD_NEWS_CATEGORY = "Todos";
 var WORLD_NEWS_REGION = "Mundo";
@@ -1922,6 +1933,7 @@ function renderWorldNews(){
   if(!list.length) return;
   WORLD_NEWS_INDEX=(WORLD_NEWS_INDEX+list.length)%list.length;
   var story = list[WORLD_NEWS_INDEX];
+  if(TV_STABILITY_MODE) story.image="";
   var storyEl = document.getElementById("worldNewsStory");
   var dotsEl = document.getElementById("worldNewsDots");
   var titleClass = story.title.length > 145 ? "title-very-long" : (story.title.length > 90 ? "title-long" : "");
@@ -1980,11 +1992,12 @@ function loadWorldNews(){
       stories.sort(function(a,b){ return a.priority-b.priority || b.timestamp-a.timestamp; });
       var seen = {};
       stories = stories.filter(function(story){ var key=story.title.toLowerCase(); if(seen[key]) return false; seen[key]=true; return true; });
-      var portuguese = stories.filter(function(s){ return s.priority===1; }).slice(0,15);
-      var international = stories.filter(function(s){ return s.priority===2; }).slice(0,5);
+      var portuguese = stories.filter(function(s){ return s.priority===1; }).slice(0,6);
+      var international = stories.filter(function(s){ return s.priority===2; }).slice(0,2);
       return Promise.all(portuguese.concat(international).map(translateStory));
     })
     .then(function(stories){
+      TV_LAST_DATA_SUCCESS=Date.now();
       stories=stories.filter(function(story){return !story.translate || !looksEnglish(story.title);});
       WORLD_NEWS = stories.length ? stories : WORLD_NEWS_FALLBACK.slice();
       WORLD_NEWS_INDEX = 0;
@@ -2028,57 +2041,35 @@ document.getElementById("newsModal").addEventListener("click",function(event){if
 document.addEventListener("keydown",function(event){if(event.key==="Escape")document.getElementById("newsModal").classList.remove("open");});
 renderMarketPulse();renderNewsFilters();WORLD_NEWS=WORLD_NEWS_FALLBACK.slice();renderWorldNews();restartWorldNewsTimer();setRightView("today");
 
+/* ================= PROTEÇÃO DE EMISSÃO TV ================= */
+var TV_WAKE_LOCK=null;
+function requestTVWakeLock(){
+  if(!TV_STABILITY_MODE || !navigator.wakeLock || document.visibilityState!=="visible") return;
+  navigator.wakeLock.request("screen").then(function(lock){
+    TV_WAKE_LOCK=lock;
+    lock.addEventListener("release",function(){TV_WAKE_LOCK=null;});
+  }).catch(function(){});
+}
+function startTVProtection(){
+  requestTVWakeLock();
+  document.addEventListener("visibilitychange",function(){
+    if(document.visibilityState==="visible" && !TV_WAKE_LOCK) requestTVWakeLock();
+  });
+  setInterval(function(){
+    if(Date.now()-TV_LAST_DATA_SUCCESS>90*60*1000) location.reload();
+  },15*60*1000);
+}
+
 /* ================= INIT ================= */
 updateDayPeriod();
 setInterval(updateDayPeriod, 5*60*1000);
 
-scheduleHourly(updateWeather);
-scheduleHourly(loadKPIs);
-scheduleHourly(loadNews);
-loadWorldNews();
+scheduleStable(updateWeather,15*60*1000,0);
+scheduleStable(loadKPIs,15*60*1000,4000);
+scheduleStable(loadNews,15*60*1000,8000);
+setTimeout(loadWorldNews,12000);
 setInterval(loadWorldNews,WORLD_NEWS_REFRESH_MS);
-</script>
-
-<audio id="radioPlayer" preload="auto" autoplay loop muted>
-  <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/OBSERVADORAAC.aac" type="audio/aac">
-</audio>
-
-<script>
-/* ================= RADIO AUTO INVISÍVEL ================= */
-(function(){
-  const radio = document.getElementById("radioPlayer");
-  if(!radio) return;
-
-  let started = false;
-
-  function startRadio(){
-    if(started) return;
-    started = true;
-
-    radio.muted = true;
-    radio.volume = 0;
-
-    radio.play().then(() => {
-      let v = 0;
-      const fade = setInterval(() => {
-        v += 0.02;
-        if(v >= 0.25){
-          radio.volume = 0.25;
-          radio.muted = false;
-          clearInterval(fade);
-        } else {
-          radio.volume = v;
-        }
-      }, 200);
-    }).catch(() => {
-      started = false;
-    });
-  }
-
-  window.addEventListener("load", startRadio);
-  document.addEventListener("click", startRadio);
-  document.addEventListener("touchstart", startRadio);
-})();
+startTVProtection();
 </script>
 </body>
 </html>
