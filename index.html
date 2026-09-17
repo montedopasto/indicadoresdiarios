@@ -656,7 +656,12 @@ var ISA_HISTORY = [];
 try{
   var savedHistory = localStorage.getItem("IGCB_HISTORY");
   if(savedHistory){
-    IGCB_HISTORY = JSON.parse(savedHistory);
+    var parsedHistory = JSON.parse(savedHistory);
+    if(Array.isArray(parsedHistory)){
+      IGCB_HISTORY = parsedHistory.filter(function(value){
+        return typeof value === "number" && isFinite(value) && value >= 0 && value <= 100;
+      }).slice(0,5);
+    }
   }
 
   var savedDay = localStorage.getItem("IGCB_HISTORY_DAY");
@@ -945,11 +950,11 @@ var trend = getTrend(igcb, previousIGCB);
 var today = new Date().toISOString().slice(0,10);
 
 // Só guarda 1 valor por dia
-if(LAST_HISTORY_DAY !== today){
+if(LAST_HISTORY_DAY !== today || IGCB_HISTORY.length === 0){
 
   IGCB_HISTORY.unshift(igcb);
 
-  if(IGCB_HISTORY.length > 7){
+  if(IGCB_HISTORY.length > 5){
     IGCB_HISTORY.pop();
   }
 
@@ -996,7 +1001,7 @@ if(isa !== null){
   let total = 0;
   let pesoTotal = 0;
 
-  for(let i=0;i<IGCB_HISTORY.length;i++){
+  for(let i=0;i<Math.min(IGCB_HISTORY.length,pesos.length);i++){
 
     let stress = 100 - IGCB_HISTORY[i];
 
