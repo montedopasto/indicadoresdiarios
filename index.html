@@ -510,8 +510,10 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
 .news-bar{height:58px;background:rgba(3,12,8,.88);border-top-color:var(--agro-line);display:flex}.news-label{align-self:stretch;display:flex;align-items:center;padding:0 22px;background:var(--agro-gold);color:#172018;font-size:10px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;white-space:nowrap;z-index:2}.news-track{display:flex;width:max-content;padding-left:24px;font-size:16px;font-weight:700;animation:news-scroll 58s linear infinite}.footer-field{height:28px;bottom:58px;background-size:auto 38px;opacity:.75}@keyframes news-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .news-modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:30px;background:rgba(1,8,5,.74);backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:.25s}.news-modal.open{opacity:1;pointer-events:auto}.news-modal__card{width:min(720px,94vw);max-height:84vh;overflow:auto;padding:28px;border:1px solid rgba(220,239,228,.2);border-radius:22px;background:#0b2117;box-shadow:0 36px 110px rgba(0,0,0,.6);transform:translateY(12px) scale(.98);transition:.28s}.news-modal.open .news-modal__card{transform:none}.news-modal__close{float:right}.news-modal__meta{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--agro-gold)}.news-modal h2{margin:23px 0 15px;font-size:clamp(25px,3vw,39px);line-height:1.1;letter-spacing:-.04em}.news-modal p{font-size:14px;line-height:1.7;color:#bdcbc4}.news-modal__insight{margin-top:20px;padding:15px;border:1px solid var(--agro-line);border-radius:13px;background:rgba(255,255,255,.035);font-size:12px;color:#dfe9e3}.news-modal__insight strong{display:block;margin-bottom:5px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--agro-gold)}
 .ui-toast{position:fixed;z-index:40;left:50%;bottom:72px;transform:translate(-50%,12px);padding:9px 13px;border:1px solid var(--agro-line);border-radius:10px;background:#102b1d;color:#e5eee9;font-size:11px;opacity:0;pointer-events:none;transition:.22s}.ui-toast.show{opacity:1;transform:translate(-50%,0)}
-.right-stage{position:relative;min-height:0;overflow:hidden}.news-view,.today-view{position:absolute;inset:0;transition:opacity .55s ease,transform .6s cubic-bezier(.2,.8,.2,1)}.news-view{opacity:1;transform:none}.today-view{opacity:0;transform:translateX(-18px);pointer-events:none}.world-news.today-mode .today-view{opacity:1;transform:none}.world-news.today-mode .news-view{opacity:0;transform:translateX(18px);pointer-events:none}.world-news.today-mode .news-filters{display:none}.world-news.today-mode #newsPrev,.world-news.today-mode #newsPause,.world-news.today-mode #newsNext{opacity:.12}.world-news.today-mode .world-news__header{padding-bottom:14px}.news-view .editorial-story{height:100%;padding-bottom:36px}.news-view .world-news__footer{right:17px;bottom:12px}
+.right-stage{position:relative;min-height:0;overflow:hidden}.news-view,.today-view,.prediction-view{position:absolute;inset:0;transition:opacity .55s ease,transform .6s cubic-bezier(.2,.8,.2,1)}.news-view{opacity:1;transform:none}.today-view,.prediction-view{opacity:0;transform:translateX(-18px);pointer-events:none}.world-news.today-mode .today-view,.world-news.prediction-mode .prediction-view{opacity:1;transform:none}.world-news.today-mode .news-view,.world-news.prediction-mode .news-view{opacity:0;transform:translateX(18px);pointer-events:none}.world-news.today-mode .prediction-view{opacity:0;transform:translateX(18px);pointer-events:none}.world-news.prediction-mode .today-view{opacity:0;transform:translateX(-18px);pointer-events:none}.world-news.today-mode .news-filters,.world-news.prediction-mode .news-filters{display:none}.world-news.today-mode #newsPrev,.world-news.today-mode #newsPause,.world-news.today-mode #newsNext,.world-news.prediction-mode #newsPrev,.world-news.prediction-mode #newsPause,.world-news.prediction-mode #newsNext{opacity:.12}.world-news.today-mode .world-news__header,.world-news.prediction-mode .world-news__header{padding-bottom:14px}.news-view .editorial-story{height:100%;padding-bottom:36px}.news-view .world-news__footer{right:17px;bottom:12px}
 .today-view{padding:12px 18px 10px;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:8px}.today-heading{display:flex;justify-content:space-between;align-items:center;min-height:18px}.today-heading h3{margin:0;font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--agro-gold)}.today-heading span{font-size:8px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--agro-muted)}.today-priority{padding:9px 12px;border:1px solid rgba(255,124,109,.28);border-radius:12px;background:linear-gradient(100deg,rgba(137,37,29,.18),rgba(255,255,255,.02))}.today-priority.good{border-color:rgba(117,211,151,.25);background:rgba(117,211,151,.06)}.today-priority__label{font-size:7px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;color:var(--agro-red)}.today-priority.good .today-priority__label{color:var(--agro-green)}.today-priority__title{margin-top:4px;font-size:clamp(13px,1vw,17px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.today-priority__detail{margin-top:3px;font-size:9px;color:var(--agro-muted)}.today-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:7px;min-height:0;overflow:hidden}.today-card{min-width:0;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:7px 11px;border:1px solid rgba(255,255,255,.06);border-radius:11px;background:rgba(255,255,255,.03)}.today-card__label{font-size:7px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--agro-muted)}.today-card__value{margin-top:3px;font-size:clamp(16px,1.35vw,22px);line-height:1;font-weight:900;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.today-card__note{margin-top:3px;font-size:8px;line-height:1.2;color:var(--agro-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.today-bottom{display:grid;grid-template-columns:.85fr 1.15fr;gap:7px;min-height:0}.today-note{min-width:0;overflow:hidden;padding:7px 10px;border-left:2px solid var(--agro-gold);border-radius:8px;background:rgba(255,255,255,.025);font-size:8px;line-height:1.25;color:#d7e1db;white-space:nowrap;text-overflow:ellipsis}.today-note strong{display:block;margin-bottom:2px;font-size:6px;letter-spacing:.1em;text-transform:uppercase;color:var(--agro-gold)}
+.prediction-view{padding:12px 18px 10px;display:grid;grid-template-rows:auto auto minmax(0,1fr);gap:8px}.prediction-heading{display:flex;align-items:center;justify-content:space-between}.prediction-heading h3{margin:0;font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--agro-gold)}.prediction-heading span{font-size:8px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--agro-muted)}.prediction-horizons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.prediction-horizon{min-width:0;padding:8px 9px;border:1px solid rgba(255,255,255,.06);border-radius:11px;background:rgba(255,255,255,.03)}.prediction-horizon.good{border-color:rgba(117,211,151,.18)}.prediction-horizon.warning{border-color:rgba(219,185,103,.32);background:rgba(219,185,103,.055)}.prediction-horizon.critical{border-color:rgba(255,124,109,.34);background:rgba(137,37,29,.12)}.prediction-horizon__time{font-size:7px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--agro-muted)}.prediction-horizon__level{margin-top:4px;font-size:clamp(13px,1.05vw,17px);font-weight:900;white-space:nowrap}.prediction-horizon.good .prediction-horizon__level{color:var(--agro-green)}.prediction-horizon.warning .prediction-horizon__level{color:var(--agro-gold)}.prediction-horizon.critical .prediction-horizon__level{color:var(--agro-red)}.prediction-horizon__note{margin-top:2px;font-size:7px;color:var(--agro-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.prediction-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:7px;min-height:0}.prediction-card{min-width:0;min-height:0;overflow:hidden;padding:9px 11px;border:1px solid rgba(255,255,255,.06);border-radius:11px;background:rgba(255,255,255,.03)}.prediction-card--wide{grid-column:1/-1}.prediction-card.warning{border-color:rgba(219,185,103,.28)}.prediction-card.critical{border-color:rgba(255,124,109,.32);background:rgba(137,37,29,.09)}.prediction-card__label{font-size:7px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--agro-muted)}.prediction-card__value{margin-top:4px;font-size:clamp(12px,.95vw,16px);line-height:1.12;font-weight:850;color:#f4f6f3}.prediction-card__note{margin-top:4px;font-size:8px;line-height:1.25;color:var(--agro-muted)}.prediction-sex{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:5px}.prediction-sex div{min-width:0}.prediction-sex span{display:block;font-size:7px;font-weight:800;text-transform:uppercase;color:var(--agro-muted)}.prediction-sex b{display:block;margin-top:2px;font-size:clamp(12px,.9vw,15px);white-space:nowrap}.trend-up{color:var(--agro-green)}.trend-flat{color:var(--agro-gold)}.trend-down{color:var(--agro-red)}
+.prediction-card{display:flex;flex-direction:column;justify-content:center;padding:11px 13px}.prediction-card__value{margin-top:5px;font-size:clamp(15px,1.12vw,19px)}.prediction-card__note{margin-top:6px;font-size:9px;line-height:1.3}.prediction-sex{gap:9px;margin-top:7px}.prediction-sex b{margin-top:3px;font-size:clamp(13px,1vw,17px)}
 @media(max-width:1100px){main{grid-template-columns:minmax(0,1fr) minmax(390px,.86fr)}.kpi-nav{grid-template-columns:repeat(3,1fr)}.kpi-jump:nth-child(n+4){display:none}}
 @media(max-width:780px){main{grid-template-columns:1fr;min-height:1200px}.kpi-console{min-height:600px}.world-news{min-height:590px}.world-news__footer{bottom:129px}.app{grid-template-rows:auto auto 58px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
@@ -592,6 +594,11 @@ body.periodo-manha,body.periodo-dia,body.periodo-por,body.periodo-noite{filter:n
         <div class="today-grid" id="todayGrid"></div>
         <div class="today-bottom"><div class="today-note" id="todayWeather"></div><div class="today-note" id="todayMessage"></div></div>
       </section>
+      <section class="prediction-view" id="predictionView" aria-label="Previsão operacional">
+        <div class="prediction-heading"><h3>Previsão operacional</h3><span>Análise automática · 72 horas</span></div>
+        <div class="prediction-horizons" id="predictionHorizons"></div>
+        <div class="prediction-grid" id="predictionGrid"></div>
+      </section>
       <div class="news-view" id="newsView">
         <article class="editorial-story story-loading" id="worldNewsStory" aria-live="polite">
           <div class="editorial-meta"><span class="editorial-tag">Mercados & pecuária</span><span class="editorial-region">Mundo</span></div>
@@ -656,7 +663,8 @@ var LAST_RAIN_YTD = 0;
 
 var LAST_RAIN_3D = null;
 var LAST_TEMP = 0;
-var LAST_WEATHER = {temp:null,apparent:null,rh:null,wind:null,gust:null,rain6h:null,rainChance:null,uv:null,sunset:null,code:null,thunder:false,updated:null};
+var LAST_WEATHER = {temp:null,apparent:null,rh:null,wind:null,gust:null,rain6h:null,rainChance:null,uv:null,sunset:null,code:null,thunder:false,updated:null,forecast:[]};
+var LAST_BOVITRACK_SUMMARY = null;
 var IGCB_HISTORY = [];
 var LAST_HISTORY_DAY = null;
 var ISA_HISTORY = [];
@@ -815,7 +823,7 @@ function getWeatherIconSVG(code){
 /* ================= THI + IGCB ================= */
 
 function calcTHI(tempC, rh){
-  return tempC - ((0.55 - 0.0055 * rh) * (tempC - 14.5));
+  return (1.8 * tempC + 32) - ((0.55 - 0.0055 * rh) * (1.8 * tempC - 26));
 }
 
 function calcIGCB(tempC, rh, wind, radiation, rain3d, rainYTD){
@@ -1266,7 +1274,20 @@ var nextRain=rainArr.slice(currentIndex+1,currentIndex+7).reduce(function(sum,va
 var nextChance=Math.max.apply(null,rainChanceArr.slice(currentIndex+1,currentIndex+7).map(function(value){return Number(value)||0;}).concat([0]));
 var nextGust=Math.max.apply(null,gustArr.slice(currentIndex,currentIndex+7).map(function(value){return Number(value)||0;}).concat([wind]));
 var todayUv=d.daily&&d.daily.uv_index_max&&d.daily.uv_index_max[0]!==undefined?Number(d.daily.uv_index_max[0])||0:Math.max.apply(null,uvArr.slice(currentIndex,currentIndex+12).map(function(value){return Number(value)||0;}).concat([0]));
-LAST_WEATHER={temp:temp,apparent:apparentArr[currentIndex]!==undefined?Math.round(Number(apparentArr[currentIndex])):temp,rh:rh,wind:Math.round(wind),gust:Math.round(nextGust),rain6h:nextRain,rainChance:Math.round(nextChance),uv:todayUv,sunset:d.daily&&d.daily.sunset?d.daily.sunset[0]:null,code:code,thunder:hCodes.slice(currentIndex,currentIndex+7).some(function(value){return Number(value)>=95;}),updated:new Date()};
+var humidityArr=(d.hourly&&d.hourly.relativehumidity_2m)||[];
+var forecastHours=[];
+for(var forecastOffset=0;forecastOffset<72 && currentIndex+forecastOffset<hTimes.length;forecastOffset++){
+  var sourceIndex=currentIndex+forecastOffset;
+  forecastHours.push({
+    time:hTimes[sourceIndex],
+    temp:Number(hTemps[sourceIndex]),
+    rh:Number(humidityArr[sourceIndex]),
+    rain:Number(rainArr[sourceIndex])||0,
+    rainChance:Number(rainChanceArr[sourceIndex])||0,
+    code:Number(hCodes[sourceIndex])||0
+  });
+}
+LAST_WEATHER={temp:temp,apparent:apparentArr[currentIndex]!==undefined?Math.round(Number(apparentArr[currentIndex])):temp,rh:rh,wind:Math.round(wind),gust:Math.round(nextGust),rain6h:nextRain,rainChance:Math.round(nextChance),uv:todayUv,sunset:d.daily&&d.daily.sunset?d.daily.sunset[0]:null,code:code,thunder:hCodes.slice(currentIndex,currentIndex+7).some(function(value){return Number(value)>=95;}),updated:new Date(),forecast:forecastHours};
 
 getRainLast3Days().then(function(rain3d){
 
@@ -1276,6 +1297,7 @@ getRainLast3Days().then(function(rain3d){
   calculateAndRenderIGCB(temp, rh, wind, radiation);
   refreshTodayView();
   refreshOperationalRadar();
+  refreshPredictionView();
 
 })
 .catch(function(){});
@@ -1492,6 +1514,101 @@ function refreshTodayView(){
   document.getElementById("todayDate").textContent=new Date().toLocaleDateString("pt-PT",{weekday:"long",day:"2-digit",month:"long"});
 }
 
+function heatRiskLevel(thi){
+  if(!Number.isFinite(thi)) return {label:"A atualizar",signal:"warning"};
+  if(thi<68) return {label:"Baixo",signal:"good"};
+  if(thi<72) return {label:"Ligeiro",signal:"warning"};
+  if(thi<80) return {label:"Moderado",signal:"warning"};
+  return {label:"Elevado",signal:"critical"};
+}
+
+function predictionWindow(start,end){
+  var hours=(LAST_WEATHER&&Array.isArray(LAST_WEATHER.forecast))?LAST_WEATHER.forecast.slice(start,end):[];
+  var maxThi=null,totalRain=0,maxRainChance=0,peakTime=null;
+  hours.forEach(function(hour){
+    if(Number.isFinite(hour.temp)&&Number.isFinite(hour.rh)){
+      var thi=calcTHI(hour.temp,hour.rh);
+      if(maxThi===null||thi>maxThi){maxThi=thi;peakTime=hour.time;}
+    }
+    totalRain+=Number(hour.rain)||0;
+    maxRainChance=Math.max(maxRainChance,Number(hour.rainChance)||0);
+  });
+  return {maxThi:maxThi,totalRain:totalRain,maxRainChance:maxRainChance,peakTime:peakTime,available:hours.length};
+}
+
+function performanceTrend(sex){
+  var summary=LAST_BOVITRACK_SUMMARY;
+  var current=summary&&summary[sex]?Number(summary[sex].averageGmdKgDay):NaN;
+  var values=[];
+  if(summary&&Array.isArray(summary.history)){
+    summary.history.slice(-15,-1).forEach(function(entry){
+      var value=entry&&entry[sex]?Number(entry[sex].averageGmdKgDay):NaN;
+      if(Number.isFinite(value)&&value>=0) values.push(value);
+    });
+  }
+  if(!values.length&&summary&&summary.previous&&summary.previous[sex]){
+    var previous=Number(summary.previous[sex].averageGmdKgDay);
+    if(Number.isFinite(previous)&&previous>=0) values.push(previous);
+  }
+  if(!Number.isFinite(current)) return {current:null,label:"A atualizar",className:"trend-flat",delta:null,signal:"warning"};
+  if(!values.length) return {current:current,label:"A criar histórico",className:"trend-flat",delta:null,signal:"good"};
+  var baseline=values.reduce(function(sum,value){return sum+value;},0)/values.length;
+  var delta=baseline>0?((current-baseline)/baseline)*100:0;
+  if(delta<=-5) return {current:current,label:"↓ a degradar",className:"trend-down",delta:delta,signal:"critical"};
+  if(delta>=3) return {current:current,label:"↑ a melhorar",className:"trend-up",delta:delta,signal:"good"};
+  return {current:current,label:"→ estável",className:"trend-flat",delta:delta,signal:"good"};
+}
+
+function rainOperationalImpact(totalRain,maxChance){
+  if(!Number.isFinite(totalRain)) return {label:"A atualizar",signal:"warning",action:"Aguardar a próxima previsão meteorológica."};
+  if(totalRain>=20) return {label:"Impacto elevado",signal:"critical",action:"Reforçar drenagem, verificar acessos, pisos e proteção do alimento."};
+  if(totalRain>=7||maxChance>=80) return {label:"Impacto moderado",signal:"warning",action:"Antecipar verificação de pisos, valas, acessos e equipamento exterior."};
+  if(totalRain>=1||maxChance>=50) return {label:"Impacto ligeiro",signal:"warning",action:"Manter atenção a pisos húmidos e proteger materiais sensíveis."};
+  return {label:"Sem impacto relevante",signal:"good",action:"Manter a verificação operacional habitual."};
+}
+
+function predictedDeviation(heatWindows,rainImpact,maleTrend,femaleTrend){
+  if(heatWindows.some(function(item){return item.signal==="critical";})) return {signal:"critical",title:"Stress térmico elevado antecipado",note:"Reforçar água, sombra e observação dos animais nos períodos mais exigentes."};
+  if(rainImpact.signal==="critical") return {signal:"critical",title:"Chuva com impacto operacional provável",note:rainImpact.action};
+  var declining=[];
+  if(maleTrend.signal==="critical") declining.push("machos");
+  if(femaleTrend.signal==="critical") declining.push("fêmeas");
+  if(declining.length) return {signal:"warning",title:"Desempenho abaixo da referência recente",note:"Acompanhar a evolução do GMD de "+declining.join(" e ")+" e validar o contexto operacional."};
+  var criticalCard=cards.find(function(card){return card.getAttribute("data-signal")==="critical";});
+  if(criticalCard){
+    var heading=criticalCard.querySelector("h3");
+    return {signal:"warning",title:"Desvio operacional já identificado",note:(heading?heading.textContent.replace(/^[^\p{L}\p{N}]+/u,"").trim():"Indicador prioritário")+" requer acompanhamento preventivo."};
+  }
+  return {signal:"good",title:"Sem desvios relevantes antecipados",note:"O sistema continua a comparar clima e desempenho com as referências disponíveis."};
+}
+
+function refreshPredictionView(){
+  var horizonsEl=document.getElementById("predictionHorizons");
+  var gridEl=document.getElementById("predictionGrid");
+  if(!horizonsEl||!gridEl) return;
+  var ranges=[{label:"Próximas 24 h",start:0,end:24},{label:"24–48 h",start:24,end:48},{label:"48–72 h",start:48,end:72}];
+  var windows=ranges.map(function(range){
+    var prediction=predictionWindow(range.start,range.end);
+    var risk=heatRiskLevel(prediction.maxThi);
+    var peak=prediction.peakTime?new Date(prediction.peakTime).toLocaleTimeString("pt-PT",{hour:"2-digit",minute:"2-digit"}):"—";
+    return {label:range.label,signal:risk.signal,risk:risk.label,note:prediction.maxThi===null?"Previsão a atualizar":"pico THI "+prediction.maxThi.toFixed(0)+" · "+peak,prediction:prediction};
+  });
+  horizonsEl.innerHTML=windows.map(function(item){return "<div class='prediction-horizon "+item.signal+"'><div class='prediction-horizon__time'>"+escapeHTML(item.label)+"</div><div class='prediction-horizon__level'>"+escapeHTML(item.risk)+"</div><div class='prediction-horizon__note'>"+escapeHTML(item.note)+"</div></div>";}).join("");
+
+  var forecastAvailable=windows.some(function(item){return item.prediction.available>0;});
+  var totalRain=forecastAvailable?windows.reduce(function(sum,item){return sum+item.prediction.totalRain;},0):NaN;
+  var maxChance=windows.reduce(function(max,item){return Math.max(max,item.prediction.maxRainChance);},0);
+  var rainImpact=rainOperationalImpact(totalRain,maxChance);
+  var maleTrend=performanceTrend("male");
+  var femaleTrend=performanceTrend("female");
+  var deviation=predictedDeviation(windows,rainImpact,maleTrend,femaleTrend);
+  function trendValue(item){return item.current===null?"—":item.current.toFixed(2)+" kg/dia";}
+  gridEl.innerHTML=
+    "<div class='prediction-card "+rainImpact.signal+"'><div class='prediction-card__label'>Chuva e impacto operacional</div><div class='prediction-card__value'>"+(Number.isFinite(totalRain)?totalRain.toFixed(1)+" L/m² · ":"")+escapeHTML(rainImpact.label)+"</div><div class='prediction-card__note'>"+escapeHTML(rainImpact.action)+"</div></div>"+
+    "<div class='prediction-card'><div class='prediction-card__label'>Tendência do desempenho por sexo</div><div class='prediction-sex'><div><span>Machos</span><b class='"+maleTrend.className+"'>"+escapeHTML(maleTrend.label)+"</b></div><div><span>Fêmeas</span><b class='"+femaleTrend.className+"'>"+escapeHTML(femaleTrend.label)+"</b></div></div><div class='prediction-card__note'>"+trendValue(maleTrend)+" · "+trendValue(femaleTrend)+"</div></div>"+
+    "<div class='prediction-card prediction-card--wide "+deviation.signal+"'><div class='prediction-card__label'>Deteção antecipada de desvios</div><div class='prediction-card__value'>"+escapeHTML(deviation.title)+"</div><div class='prediction-card__note'>"+escapeHTML(deviation.note)+"</div></div>";
+}
+
 function handleKpiImageError(image){
   var card=image.closest(".kpi-card");
   if(card){card.remove();refreshCardsAndRotation();kpiToast("Indicador visual indisponível foi ignorado");}
@@ -1600,6 +1717,7 @@ function bovitrackCard(id,title,body){
 function renderBoviTrackSummary(data){
       if(!data || !Number.isFinite(Number(data.totalAnimals)) || !data.male || !data.female) throw new Error("invalid bovitrack summary");
       TV_LAST_DATA_SUCCESS=Date.now();
+      LAST_BOVITRACK_SUMMARY=data;
       var grid=document.getElementById("kpis");
       if(!grid) return;
       Array.prototype.forEach.call(grid.querySelectorAll(".bovitrack-card"),function(card){card.remove();});
@@ -1626,6 +1744,7 @@ function renderBoviTrackSummary(data){
         bovitrackAverageBody(data.male.averageAgeMonths,data.female.averageAgeMonths,"meses",1)
       ));
       refreshCardsAndRotation();
+      refreshPredictionView();
 }
 
 function loadBoviTrackSummary(){
@@ -2089,7 +2208,7 @@ function loadWorldNews(){
       stories=stories.filter(function(story){return !story.translate || !looksEnglish(story.title);});
       WORLD_NEWS = stories.length ? stories : WORLD_NEWS_FALLBACK.slice();
       WORLD_NEWS_INDEX = 0;
-      document.getElementById("worldNewsStatus").textContent = RIGHT_VIEW_MODE==="today" ? "Emissão automática" : "Atualizado";
+      document.getElementById("worldNewsStatus").textContent = RIGHT_VIEW_MODE==="news" ? "Atualizado" : "Emissão automática";
       renderNewsFilters();
       renderWorldNews();
       restartWorldNewsTimer();
@@ -2097,7 +2216,7 @@ function loadWorldNews(){
     .catch(function(){
       WORLD_NEWS=WORLD_NEWS_FALLBACK.slice();
       WORLD_NEWS_INDEX=0;
-      document.getElementById("worldNewsStatus").textContent = RIGHT_VIEW_MODE==="today" ? "Emissão automática" : "Reserva editorial";
+      document.getElementById("worldNewsStatus").textContent = RIGHT_VIEW_MODE==="news" ? "Reserva editorial" : "Emissão automática";
       renderNewsFilters();renderWorldNews();restartWorldNewsTimer();
     });
 }
@@ -2112,13 +2231,17 @@ function setRightView(mode){
   RIGHT_VIEW_MODE=mode;
   var panel=document.querySelector(".world-news");
   var today=mode==="today";
+  var prediction=mode==="prediction";
   panel.classList.toggle("today-mode",today);
-  document.getElementById("worldPanelEyebrow").textContent=today?"Informação interna":"Inteligência global";
-  document.getElementById("worldPanelTitle").textContent=today?"Hoje no Monte do Pasto":"Notícias & mercados";
-  document.getElementById("worldNewsStatus").textContent=today?"Emissão automática":"Atualizado";
+  panel.classList.toggle("prediction-mode",prediction);
+  document.getElementById("worldPanelEyebrow").textContent=today?"Informação interna":(prediction?"Antecipação operacional":"Inteligência global");
+  document.getElementById("worldPanelTitle").textContent=today?"Hoje no Monte do Pasto":(prediction?"Próximas 72 horas":"Notícias & mercados");
+  document.getElementById("worldNewsStatus").textContent=(today||prediction)?"Emissão automática":"Atualizado";
   if(today) refreshTodayView();
+  if(prediction) refreshPredictionView();
   clearTimeout(RIGHT_VIEW_TIMER);
-  RIGHT_VIEW_TIMER=setTimeout(function(){setRightView(today?"news":"today");},today?20000:12000);
+  var nextMode=today?"prediction":(prediction?"news":"today");
+  RIGHT_VIEW_TIMER=setTimeout(function(){setRightView(nextMode);},today?18000:(prediction?20000:12000));
 }
 
 document.getElementById("newsPrev").addEventListener("click",function(){WORLD_NEWS_INDEX--;renderWorldNews();restartWorldNewsTimer();});

@@ -116,20 +116,34 @@ const priorMetrics = prior ? {
   female: prior.female
 } : null;
 
-if (priorMetrics && JSON.stringify(priorMetrics) === JSON.stringify(currentMetrics)) {
+const day = new Date().toISOString().slice(0, 10);
+const priorHistory = prior && Array.isArray(prior.history) ? prior.history : [];
+const history = priorHistory.filter((entry) => entry && entry.day !== day).slice(-89);
+history.push({
+  day,
+  totalAnimals: currentMetrics.totalAnimals,
+  male: { averageGmdKgDay: currentMetrics.male.averageGmdKgDay },
+  female: { averageGmdKgDay: currentMetrics.female.averageGmdKgDay }
+});
+
+const metricsChanged = !priorMetrics || JSON.stringify(priorMetrics) !== JSON.stringify(currentMetrics);
+const historyChanged = JSON.stringify(priorHistory) !== JSON.stringify(history);
+
+if (!metricsChanged && !historyChanged && prior?.schemaVersion === 2) {
   console.log(`Resumo BoviTrack sem alterações: ${currentMetrics.totalAnimals} animais`);
   process.exit(0);
 }
 
 const summary = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
   ...currentMetrics,
-  previous: prior ? {
+  previous: metricsChanged && prior ? {
     totalAnimals: prior.totalAnimals ?? null,
     male: prior.male ?? null,
     female: prior.female ?? null
-  } : null
+  } : (prior?.previous ?? null),
+  history
 };
 
 await mkdir(dirname(OUTPUT_PATH), { recursive: true });
