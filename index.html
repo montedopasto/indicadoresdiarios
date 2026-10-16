@@ -272,6 +272,13 @@ main{
   color:#e0f2e8;
   font-weight:600;
 }
+.sex-average-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,2vw,24px);width:min(760px,100%)}
+.sex-average{padding:clamp(14px,1.8vw,24px);border:1px solid rgba(255,255,255,.09);border-radius:18px;background:rgba(255,255,255,.035)}
+.sex-average__label{display:flex;align-items:center;gap:8px;font-size:clamp(11px,.9vw,14px);font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--agro-muted)}
+.sex-average__label::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--agro-gold);box-shadow:0 0 14px rgba(219,185,103,.45)}
+.sex-average--female .sex-average__label::before{background:var(--agro-green);box-shadow:0 0 14px rgba(117,211,151,.45)}
+.sex-average__value{margin-top:10px;font-size:clamp(34px,4.3vw,68px);font-weight:900;line-height:1;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 16px rgba(0,0,0,.45)}
+.sex-average__value span{font-size:.28em;font-weight:700;letter-spacing:0;color:var(--t2)}
 .thi-indicator{
   display:inline-block;
   width:18px;
@@ -485,7 +492,7 @@ main{padding:14px clamp(24px,2.4vw,46px) 14px;grid-template-columns:minmax(0,1.1
 .kpi-console #kpis .card.hidden{display:flex;opacity:0;transform:translateX(26px) scale(.985);pointer-events:none}
 .kpi-console #kpis .card h3{font-size:clamp(15px,1.25vw,21px);color:var(--agro-gold);margin-bottom:18px}
 .kpi-console #kpis .kpi{font-size:clamp(52px,6vw,96px);letter-spacing:-.055em}.kpi-console #kpis .kpi span{font-size:.28em}.kpi-console #kpis .kpi-multiline{font-size:clamp(24px,2.7vw,43px);line-height:1.18}.kpi-console #kpis .kpi-sub{font-size:clamp(14px,1.1vw,18px)}
-.kpi-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding:11px 16px 14px;border-top:1px solid var(--agro-line);overflow:hidden}
+.kpi-nav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;padding:11px 16px 14px;border-top:1px solid var(--agro-line);overflow:hidden}
 .kpi-jump{position:relative;min-width:0;padding:8px 9px;border:1px solid transparent;border-radius:11px;background:rgba(255,255,255,.025);color:#fff;text-align:left;cursor:pointer;overflow:hidden;transition:.22s}.kpi-jump:hover{background:rgba(255,255,255,.065)}.kpi-jump.active{border-color:rgba(219,185,103,.34);background:rgba(219,185,103,.08)}.kpi-jump span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:8px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--agro-muted)}.kpi-jump b{display:block;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.kpi-progress{position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--agro-gold)}.kpi-progress.running{animation:kpiProgress var(--rotation-time) linear forwards}@keyframes kpiProgress{to{width:100%}}
 
 .world-news{grid-template-rows:auto minmax(0,1fr) 120px}
@@ -633,6 +640,8 @@ var ROTATE_MS = 7000;
 
 var SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcoOLTXvKf6K_4aejdyA7ZK6PObIzqyiLBBOPSehdSkKlxj9_ms0EqJOjT7u2lN11j5DaYIAkcqoy7/pub?output=csv";
 var NEWS_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgtnmWS6XFXm8V80ZzxQ1n4QwGxncyWqw4LnljjBu2kG5xWIRBoMLM_ya7cyg9B_Jyi9N2gqjSvVfS/pub?gid=0&single=true&output=csv";
+var BOVITRACK_SUMMARY_URL = "data/bovitrack-summary.json";
+var BOVITRACK_SOURCE_URL = "https://script.google.com/macros/s/AKfycbxyobcRj8Phe6rCZKW-7kcOunoF5difoXlTtLKXCnZA_oprNAXwlqrZDTQcuTLQ0_35/exec";
 
 var WEATHER_URL =
   "https://api.open-meteo.com/v1/forecast?latitude="+LAT+"&longitude="+LON+
@@ -1346,6 +1355,7 @@ var rotateTimer = null;
 var kpiRotationPaused = false;
 var activeKpiKey = localStorage.getItem("MONTE_ACTIVE_KPI") || "";
 var cardsSincePriority = 0;
+var kpiResumeIndex = null;
 var tvPriorityPrimed = false;
 
 function kpiCardKey(card,index){
@@ -1501,7 +1511,15 @@ function showKpi(index,manual){
 
 function advanceKpiForTV(){
   var criticalIndex=cards.findIndex(function(card){return card.getAttribute("data-signal")==="critical";});
-  if(criticalIndex>=0 && page!==criticalIndex && cardsSincePriority>=2){
+  if(page===criticalIndex && kpiResumeIndex!==null){
+    var resume=kpiResumeIndex;
+    kpiResumeIndex=null;
+    showKpi(resume,false);
+    return;
+  }
+  if(criticalIndex>=0 && page!==criticalIndex && cardsSincePriority>=4){
+    kpiResumeIndex=(page+1)%cards.length;
+    if(kpiResumeIndex===criticalIndex) kpiResumeIndex=(kpiResumeIndex+1)%cards.length;
     cardsSincePriority=0;
     showKpi(criticalIndex,false);
     return;
@@ -1557,6 +1575,123 @@ document.getElementById("operationalState").addEventListener("click",function(){
   else kpiToast("Não existem alertas operacionais ativos");
 });
 
+/* ================= BOVITRACK (apenas agregados para TV) ================= */
+function bovitrackNumber(value,digits){
+  return typeof value === "number" && isFinite(value) ? value.toFixed(digits) : "—";
+}
+
+function parseBoviTrackNumber(value){
+  var parsed=parseFloat(String(value===null||value===undefined?"":value).trim().replace(",","."));
+  return isFinite(parsed)?parsed:null;
+}
+
+function parseBoviTrackDate(value){
+  var input=String(value===null||value===undefined?"":value).trim(),match;
+  match=input.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(match) return new Date(Date.UTC(Number(match[1]),Number(match[2])-1,Number(match[3])));
+  match=input.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
+  if(match) return new Date(Date.UTC(Number(match[3]),Number(match[2])-1,Number(match[1])));
+  return null;
+}
+
+function summarizeBoviTrackRows(rows){
+  var buckets={M:{count:0,weight:0,weights:0,gmd:0,gmds:0,age:0,ages:0},F:{count:0,weight:0,weights:0,gmd:0,gmds:0,age:0,ages:0}};
+  var now=new Date(),today=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()));
+  (rows||[]).forEach(function(row){
+    var sex=String(row.sexo||"").trim().toUpperCase();
+    if(!buckets[sex]) return;
+    var bucket=buckets[sex];
+    bucket.count++;
+    var currentWeight=parseBoviTrackNumber(row.peso_atual);
+    if(currentWeight!==null && currentWeight>0){bucket.weight+=currentWeight;bucket.weights++;}
+    var birth=parseBoviTrackDate(row.data_nasc);
+    if(birth && birth<=today){bucket.age+=(today-birth)/86400000/30.4375;bucket.ages++;}
+    var previousWeight=parseBoviTrackNumber(row.peso_anterior);
+    var previousDate=parseBoviTrackDate(row.data_peso_anterior);
+    var currentDate=parseBoviTrackDate(row.data_peso_atual);
+    if(previousWeight!==null && currentWeight!==null && previousDate && currentDate){
+      var days=Math.floor((currentDate-previousDate)/86400000);
+      var gmd=days>0?(currentWeight-previousWeight)/days:null;
+      if(gmd!==null && gmd>=0 && gmd<=3){bucket.gmd+=gmd;bucket.gmds++;}
+    }
+  });
+  function average(total,count,digits){
+    if(!count) return null;
+    var factor=Math.pow(10,digits);
+    return Math.round((total/count)*factor)/factor;
+  }
+  function summary(bucket){
+    return {averageWeightKg:average(bucket.weight,bucket.weights,1),averageGmdKgDay:average(bucket.gmd,bucket.gmds,2),averageAgeMonths:average(bucket.age,bucket.ages,1)};
+  }
+  return {totalAnimals:buckets.M.count+buckets.F.count,male:summary(buckets.M),female:summary(buckets.F)};
+}
+
+function bovitrackAverageBody(male,female,unit,digits){
+  return "<div class='sex-average-grid'>"+
+    "<div class='sex-average sex-average--male'><div class='sex-average__label'>Machos</div><div class='sex-average__value'>"+
+      bovitrackNumber(male,digits)+" <span>"+escapeHTML(unit)+"</span></div></div>"+
+    "<div class='sex-average sex-average--female'><div class='sex-average__label'>Fêmeas</div><div class='sex-average__value'>"+
+      bovitrackNumber(female,digits)+" <span>"+escapeHTML(unit)+"</span></div></div>"+
+  "</div>";
+}
+
+function bovitrackCard(id,title,body){
+  var card=document.createElement("div");
+  card.className="card kpi-card bovitrack-card";
+  card.id=id;
+  card.setAttribute("data-kpi-key",id);
+  card.innerHTML="<h3>"+escapeHTML(title)+"</h3>"+body;
+  return card;
+}
+
+function renderBoviTrackSummary(data){
+      if(!data || !Number.isFinite(Number(data.totalAnimals)) || !data.male || !data.female) throw new Error("invalid bovitrack summary");
+      TV_LAST_DATA_SUCCESS=Date.now();
+      var grid=document.getElementById("kpis");
+      if(!grid) return;
+      Array.prototype.forEach.call(grid.querySelectorAll(".bovitrack-card"),function(card){card.remove();});
+
+      grid.appendChild(bovitrackCard(
+        "bovitrackTotal",
+        "Efetivo bovino",
+        "<div class='kpi'>"+Math.round(Number(data.totalAnimals))+" <span>animais</span></div>"+
+        "<div class='kpi-sub'>Total conjunto de machos e fêmeas</div>"
+      ));
+      grid.appendChild(bovitrackCard(
+        "bovitrackWeight",
+        "Peso médio por sexo",
+        bovitrackAverageBody(data.male.averageWeightKg,data.female.averageWeightKg,"kg",1)
+      ));
+      grid.appendChild(bovitrackCard(
+        "bovitrackGmd",
+        "Ganho médio diário por sexo",
+        bovitrackAverageBody(data.male.averageGmdKgDay,data.female.averageGmdKgDay,"kg/dia",2)
+      ));
+      grid.appendChild(bovitrackCard(
+        "bovitrackAge",
+        "Idade média por sexo",
+        bovitrackAverageBody(data.male.averageAgeMonths,data.female.averageAgeMonths,"meses",1)
+      ));
+      refreshCardsAndRotation();
+}
+
+function loadBoviTrackSummary(){
+  fetch(BOVITRACK_SOURCE_URL+"?v="+Date.now(),{cache:"no-store"})
+    .then(function(response){if(!response.ok) throw new Error("bovitrack source");return response.json();})
+    .then(function(rows){renderBoviTrackSummary(summarizeBoviTrackRows(rows));})
+    .catch(function(){
+      return fetch(BOVITRACK_SUMMARY_URL+"?v="+Date.now(),{cache:"no-store"})
+        .then(function(response){if(!response.ok) throw new Error("bovitrack fallback");return response.json();})
+        .then(renderBoviTrackSummary)
+        .catch(function(){});
+    });
+}
+
+function isBoviTrackOwnedKpiTitle(title){
+  var normalized=(title||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  return /stock animais|total de animais|efetivo bovino|efetivo total|peso medio|ganho medio diario|\bgmd\b|idade media/.test(normalized);
+}
+
 /* ================= KPIs (Google Sheet) ================= */
 function loadKPIs(){
   fetch(SHEET_URL, { cache: "no-store" })
@@ -1577,7 +1712,7 @@ function loadKPIs(){
         /* Cards exclusivamente visuais ficam fora da rotação de TV: se a imagem
            externa falhar, produzem um ecrã vazio sem valor operacional. */
         var hasUsefulContent = (r.type === "text" || r.type === "number") ? !!r.value : !!r.imageUrl;
-        return r.active && r.type && r.title && r.type !== "image" && hasUsefulContent;
+        return r.active && r.type && r.title && r.type !== "image" && hasUsefulContent && !isBoviTrackOwnedKpiTitle(r.title);
       });
 
       rows.sort(function(a,b){
@@ -2071,6 +2206,7 @@ setInterval(updateDayPeriod, 5*60*1000);
 
 scheduleStable(updateWeather,15*60*1000,0);
 scheduleStable(loadKPIs,15*60*1000,4000);
+scheduleStable(loadBoviTrackSummary,60*60*1000,6000);
 scheduleStable(loadNews,15*60*1000,8000);
 setTimeout(loadWorldNews,12000);
 setInterval(loadWorldNews,WORLD_NEWS_REFRESH_MS);
