@@ -2163,7 +2163,7 @@ function rotateWorldNews(){
 function restartWorldNewsTimer(){
   if(WORLD_NEWS_TIMER) clearInterval(WORLD_NEWS_TIMER);
   WORLD_NEWS_TIMER=null;
-  if(!WORLD_NEWS_PAUSED && filteredWorldNews().length>1) WORLD_NEWS_TIMER=setInterval(rotateWorldNews,8500);
+  if(!WORLD_NEWS_PAUSED && filteredWorldNews().length>1) WORLD_NEWS_TIMER=setInterval(rotateWorldNews,10000);
 }
 function loadWorldNews(){
   var requests = WORLD_NEWS_FEEDS.map(function(feed){
@@ -2236,7 +2236,7 @@ function setRightView(mode){
   if(prediction) refreshPredictionView();
   clearTimeout(RIGHT_VIEW_TIMER);
   var nextMode=today?"prediction":(prediction?"news":"today");
-  RIGHT_VIEW_TIMER=setTimeout(function(){setRightView(nextMode);},today?18000:(prediction?20000:12000));
+  RIGHT_VIEW_TIMER=setTimeout(function(){setRightView(nextMode);},30000);
 }
 
 document.getElementById("newsPrev").addEventListener("click",function(){WORLD_NEWS_INDEX--;renderWorldNews();restartWorldNewsTimer();});
