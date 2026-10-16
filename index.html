@@ -595,7 +595,7 @@ body.periodo-manha,body.periodo-dia,body.periodo-por,body.periodo-noite{filter:n
         <div class="today-bottom"><div class="today-note" id="todayWeather"></div><div class="today-note" id="todayMessage"></div></div>
       </section>
       <section class="prediction-view" id="predictionView" aria-label="Previsão operacional">
-        <div class="prediction-heading"><h3>Previsão operacional</h3><span>Análise automática · 72 horas</span></div>
+        <div class="prediction-heading"><h3>Risco de stress térmico</h3><span>Análise automática · 72 horas</span></div>
         <div class="prediction-horizons" id="predictionHorizons"></div>
         <div class="prediction-grid" id="predictionGrid"></div>
       </section>
@@ -1516,10 +1516,10 @@ function refreshTodayView(){
 
 function heatRiskLevel(thi){
   if(!Number.isFinite(thi)) return {label:"A atualizar",signal:"warning"};
-  if(thi<68) return {label:"Baixo",signal:"good"};
-  if(thi<72) return {label:"Ligeiro",signal:"warning"};
-  if(thi<80) return {label:"Moderado",signal:"warning"};
-  return {label:"Elevado",signal:"critical"};
+  if(thi<68) return {label:"Risco baixo",signal:"good"};
+  if(thi<72) return {label:"Atenção ligeira",signal:"warning"};
+  if(thi<80) return {label:"Atenção moderada",signal:"warning"};
+  return {label:"Atenção elevada",signal:"critical"};
 }
 
 function predictionWindow(start,end){
@@ -1581,12 +1581,12 @@ function refreshPredictionView(){
   var horizonsEl=document.getElementById("predictionHorizons");
   var gridEl=document.getElementById("predictionGrid");
   if(!horizonsEl||!gridEl) return;
-  var ranges=[{label:"Próximas 24 h",start:0,end:24},{label:"24–48 h",start:24,end:48},{label:"48–72 h",start:48,end:72}];
+  var ranges=[{label:"Próximas 24 h",start:0,end:24},{label:"Amanhã",start:24,end:48},{label:"Daqui a 2 dias",start:48,end:72}];
   var windows=ranges.map(function(range){
     var prediction=predictionWindow(range.start,range.end);
     var risk=heatRiskLevel(prediction.maxThi);
     var peak=prediction.peakTime?new Date(prediction.peakTime).toLocaleTimeString("pt-PT",{hour:"2-digit",minute:"2-digit"}):"—";
-    return {label:range.label,signal:risk.signal,risk:risk.label,note:prediction.maxThi===null?"Previsão a atualizar":"pico THI "+prediction.maxThi.toFixed(0)+" · "+peak,prediction:prediction};
+    return {label:range.label,signal:risk.signal,risk:risk.label,note:prediction.maxThi===null?"Previsão a atualizar":"Maior risco às "+peak,prediction:prediction};
   });
   horizonsEl.innerHTML=windows.map(function(item){return "<div class='prediction-horizon "+item.signal+"'><div class='prediction-horizon__time'>"+escapeHTML(item.label)+"</div><div class='prediction-horizon__level'>"+escapeHTML(item.risk)+"</div><div class='prediction-horizon__note'>"+escapeHTML(item.note)+"</div></div>";}).join("");
 
