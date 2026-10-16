@@ -641,7 +641,6 @@ var ROTATE_MS = 7000;
 var SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcoOLTXvKf6K_4aejdyA7ZK6PObIzqyiLBBOPSehdSkKlxj9_ms0EqJOjT7u2lN11j5DaYIAkcqoy7/pub?output=csv";
 var NEWS_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgtnmWS6XFXm8V80ZzxQ1n4QwGxncyWqw4LnljjBu2kG5xWIRBoMLM_ya7cyg9B_Jyi9N2gqjSvVfS/pub?gid=0&single=true&output=csv";
 var BOVITRACK_SUMMARY_URL = "data/bovitrack-summary.json";
-var BOVITRACK_SOURCE_URL = "https://script.google.com/macros/s/AKfycbxyobcRj8Phe6rCZKW-7kcOunoF5difoXlTtLKXCnZA_oprNAXwlqrZDTQcuTLQ0_35/exec";
 
 var WEATHER_URL =
   "https://api.open-meteo.com/v1/forecast?latitude="+LAT+"&longitude="+LON+
@@ -1580,52 +1579,6 @@ function bovitrackNumber(value,digits){
   return typeof value === "number" && isFinite(value) ? value.toFixed(digits) : "—";
 }
 
-function parseBoviTrackNumber(value){
-  var parsed=parseFloat(String(value===null||value===undefined?"":value).trim().replace(",","."));
-  return isFinite(parsed)?parsed:null;
-}
-
-function parseBoviTrackDate(value){
-  var input=String(value===null||value===undefined?"":value).trim(),match;
-  match=input.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if(match) return new Date(Date.UTC(Number(match[1]),Number(match[2])-1,Number(match[3])));
-  match=input.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
-  if(match) return new Date(Date.UTC(Number(match[3]),Number(match[2])-1,Number(match[1])));
-  return null;
-}
-
-function summarizeBoviTrackRows(rows){
-  var buckets={M:{count:0,weight:0,weights:0,gmd:0,gmds:0,age:0,ages:0},F:{count:0,weight:0,weights:0,gmd:0,gmds:0,age:0,ages:0}};
-  var now=new Date(),today=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()));
-  (rows||[]).forEach(function(row){
-    var sex=String(row.sexo||"").trim().toUpperCase();
-    if(!buckets[sex]) return;
-    var bucket=buckets[sex];
-    bucket.count++;
-    var currentWeight=parseBoviTrackNumber(row.peso_atual);
-    if(currentWeight!==null && currentWeight>0){bucket.weight+=currentWeight;bucket.weights++;}
-    var birth=parseBoviTrackDate(row.data_nasc);
-    if(birth && birth<=today){bucket.age+=(today-birth)/86400000/30.4375;bucket.ages++;}
-    var previousWeight=parseBoviTrackNumber(row.peso_anterior);
-    var previousDate=parseBoviTrackDate(row.data_peso_anterior);
-    var currentDate=parseBoviTrackDate(row.data_peso_atual);
-    if(previousWeight!==null && currentWeight!==null && previousDate && currentDate){
-      var days=Math.floor((currentDate-previousDate)/86400000);
-      var gmd=days>0?(currentWeight-previousWeight)/days:null;
-      if(gmd!==null && gmd>=0 && gmd<=3){bucket.gmd+=gmd;bucket.gmds++;}
-    }
-  });
-  function average(total,count,digits){
-    if(!count) return null;
-    var factor=Math.pow(10,digits);
-    return Math.round((total/count)*factor)/factor;
-  }
-  function summary(bucket){
-    return {averageWeightKg:average(bucket.weight,bucket.weights,1),averageGmdKgDay:average(bucket.gmd,bucket.gmds,2),averageAgeMonths:average(bucket.age,bucket.ages,1)};
-  }
-  return {totalAnimals:buckets.M.count+buckets.F.count,male:summary(buckets.M),female:summary(buckets.F)};
-}
-
 function bovitrackAverageBody(male,female,unit,digits){
   return "<div class='sex-average-grid'>"+
     "<div class='sex-average sex-average--male'><div class='sex-average__label'>Machos</div><div class='sex-average__value'>"+
@@ -1676,15 +1629,10 @@ function renderBoviTrackSummary(data){
 }
 
 function loadBoviTrackSummary(){
-  fetch(BOVITRACK_SOURCE_URL+"?v="+Date.now(),{cache:"no-store"})
-    .then(function(response){if(!response.ok) throw new Error("bovitrack source");return response.json();})
-    .then(function(rows){renderBoviTrackSummary(summarizeBoviTrackRows(rows));})
-    .catch(function(){
-      return fetch(BOVITRACK_SUMMARY_URL+"?v="+Date.now(),{cache:"no-store"})
-        .then(function(response){if(!response.ok) throw new Error("bovitrack fallback");return response.json();})
-        .then(renderBoviTrackSummary)
-        .catch(function(){});
-    });
+  fetch(BOVITRACK_SUMMARY_URL+"?v="+Date.now(),{cache:"no-store"})
+    .then(function(response){if(!response.ok) throw new Error("bovitrack summary");return response.json();})
+    .then(renderBoviTrackSummary)
+    .catch(function(){});
 }
 
 function isBoviTrackOwnedKpiTitle(title){
