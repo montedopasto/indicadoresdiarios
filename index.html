@@ -1551,7 +1551,7 @@ function performanceTrend(sex){
     if(Number.isFinite(previous)&&previous>=0) values.push(previous);
   }
   if(!Number.isFinite(current)) return {current:null,label:"A atualizar",className:"trend-flat",delta:null,signal:"warning"};
-  if(!values.length) return {current:current,label:"A criar histórico",className:"trend-flat",delta:null,signal:"good"};
+  if(!values.length) return {current:current,label:"Em análise",className:"trend-flat",delta:null,signal:"good"};
   var baseline=values.reduce(function(sum,value){return sum+value;},0)/values.length;
   var delta=baseline>0?((current-baseline)/baseline)*100:0;
   if(delta<=-5) return {current:current,label:"↓ a degradar",className:"trend-down",delta:delta,signal:"critical"};
@@ -1574,12 +1574,7 @@ function predictedDeviation(heatWindows,rainImpact,maleTrend,femaleTrend){
   if(maleTrend.signal==="critical") declining.push("machos");
   if(femaleTrend.signal==="critical") declining.push("fêmeas");
   if(declining.length) return {signal:"warning",title:"Desempenho abaixo da referência recente",note:"Acompanhar a evolução do GMD de "+declining.join(" e ")+" e validar o contexto operacional."};
-  var criticalCard=cards.find(function(card){return card.getAttribute("data-signal")==="critical";});
-  if(criticalCard){
-    var heading=criticalCard.querySelector("h3");
-    return {signal:"warning",title:"Desvio operacional já identificado",note:(heading?heading.textContent.replace(/^[^\p{L}\p{N}]+/u,"").trim():"Indicador prioritário")+" requer acompanhamento preventivo."};
-  }
-  return {signal:"good",title:"Sem desvios relevantes antecipados",note:"O sistema continua a comparar clima e desempenho com as referências disponíveis."};
+  return {signal:"good",title:"Sem desvios antecipados",note:"A análise cruza as próximas 72 horas com a evolução do desempenho disponível."};
 }
 
 function refreshPredictionView(){
