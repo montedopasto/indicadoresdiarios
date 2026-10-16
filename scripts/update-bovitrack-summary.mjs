@@ -1,6 +1,8 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
+// A televisão recebe somente este resumo; os registos individuais nunca são publicados no painel.
+
 const SOURCE_URL = process.env.BOVITRACK_SOURCE_URL ||
   "https://script.google.com/macros/s/AKfycbxyobcRj8Phe6rCZKW-7kcOunoF5difoXlTtLKXCnZA_oprNAXwlqrZDTQcuTLQ0_35/exec";
 const OUTPUT_PATH = resolve(process.argv[2] || "data/bovitrack-summary.json");
