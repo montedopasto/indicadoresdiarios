@@ -1,21 +1,43 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-16T14:40:02.119Z",
+  "generatedAt": "2026-10-17T04:28:48.535Z",
   "totalAnimals": 4846,
   "male": {
     "averageWeightKg": 342.9,
     "averageGmdKgDay": 1.27,
-    "averageAgeMonths": 14.5
+    "averageAgeMonths": 14.6
   },
   "female": {
     "averageWeightKg": 347.5,
     "averageGmdKgDay": 1.02,
     "averageAgeMonths": 16.2
   },
-  "previous": null,
+  "previous": {
+    "totalAnimals": 4846,
+    "male": {
+      "averageWeightKg": 342.9,
+      "averageGmdKgDay": 1.27,
+      "averageAgeMonths": 14.5
+    },
+    "female": {
+      "averageWeightKg": 347.5,
+      "averageGmdKgDay": 1.02,
+      "averageAgeMonths": 16.2
+    }
+  },
   "history": [
     {
       "day": "2026-10-16",
+      "totalAnimals": 4846,
+      "male": {
+        "averageGmdKgDay": 1.27
+      },
+      "female": {
+        "averageGmdKgDay": 1.02
+      }
+    },
+    {
+      "day": "2026-10-17",
       "totalAnimals": 4846,
       "male": {
         "averageGmdKgDay": 1.27
