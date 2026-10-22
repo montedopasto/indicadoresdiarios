@@ -1582,7 +1582,9 @@ function performanceTrend(sex){
   var baseline=values.reduce(function(sum,value){return sum+value;},0)/values.length;
   var delta=baseline>0?((current-baseline)/baseline)*100:0;
   if(delta<=-5) return {current:current,label:"↓ a degradar",className:"trend-down",delta:delta,signal:"critical"};
+  if(delta<=-0.5) return {current:current,label:"↘ ligeira descida",className:"trend-down",delta:delta,signal:"warning"};
   if(delta>=3) return {current:current,label:"↑ a melhorar",className:"trend-up",delta:delta,signal:"good"};
+  if(delta>=0.5) return {current:current,label:"↗ ligeira subida",className:"trend-up",delta:delta,signal:"good"};
   return {current:current,label:"→ estável",className:"trend-flat",delta:delta,signal:"good"};
 }
 
@@ -1603,6 +1605,15 @@ function predictedDeviation(heatWindows,rainImpact,maleTrend,femaleTrend){
   if(maleTrend.signal==="critical") declining.push("machos");
   if(femaleTrend.signal==="critical") declining.push("fêmeas");
   if(declining.length) return {signal:"warning",title:"Desempenho abaixo da referência recente",note:"Acompanhar a evolução do GMD de "+declining.join(" e ")+" e validar o contexto operacional."};
+  var slightDecline=[];
+  if(Number.isFinite(maleTrend.delta)&&maleTrend.delta<=-0.5) slightDecline.push("machos");
+  if(Number.isFinite(femaleTrend.delta)&&femaleTrend.delta<=-0.5) slightDecline.push("fêmeas");
+  if(slightDecline.length) return {signal:"warning",title:"Variação ligeira a acompanhar",note:"O GMD de "+slightDecline.join(" e ")+" desceu face ao carregamento anterior, sem atingir um desvio crítico."};
+  var improving=[];
+  if(Number.isFinite(maleTrend.delta)&&maleTrend.delta>=0.5) improving.push("machos");
+  if(Number.isFinite(femaleTrend.delta)&&femaleTrend.delta>=0.5) improving.push("fêmeas");
+  if(improving.length===2) return {signal:"good",title:"Melhoria ligeira nos dois sexos",note:"O GMD de machos e fêmeas subiu face ao carregamento anterior."};
+  if(improving.length===1) return {signal:"good",title:"Evolução ligeiramente positiva",note:"O GMD de "+improving[0]+" subiu face ao carregamento anterior."};
   return {signal:"good",title:"Sem desvios antecipados",note:"A análise cruza as próximas 72 horas com a evolução do desempenho disponível."};
 }
 
@@ -1632,9 +1643,14 @@ function refreshPredictionView(){
   var femaleTrend=performanceTrend("female");
   var deviation=predictedDeviation(windows,rainImpact,maleTrend,femaleTrend);
   function trendValue(item){return item.current===null?"—":item.current.toFixed(2)+" kg/dia";}
+  function trendHeadline(item){
+    if(!Number.isFinite(item.delta)) return item.label;
+    var formatted=Math.abs(item.delta).toFixed(1).replace(".",",");
+    return item.label+" · "+(item.delta>0?"+":item.delta<0?"−":"")+formatted+"%";
+  }
   gridEl.innerHTML=
     "<div class='prediction-card "+rainImpact.signal+"'><div class='prediction-card__label'>Lama, pisos e acessos</div><div class='prediction-card__value'>"+escapeHTML(rainImpact.label)+(Number.isFinite(totalRain)?" · "+totalRain.toFixed(1)+" L/m² previstos":"")+"</div><div class='prediction-card__note'>"+escapeHTML(rainImpact.action)+"</div></div>"+
-    "<div class='prediction-card'><div class='prediction-card__label'>Tendência do desempenho por sexo</div><div class='prediction-sex'><div><span>Machos</span><b class='"+maleTrend.className+"'>"+escapeHTML(maleTrend.label)+"</b></div><div><span>Fêmeas</span><b class='"+femaleTrend.className+"'>"+escapeHTML(femaleTrend.label)+"</b></div></div><div class='prediction-card__note'>"+trendValue(maleTrend)+" · "+trendValue(femaleTrend)+"</div></div>"+
+    "<div class='prediction-card'><div class='prediction-card__label'>Tendência do desempenho por sexo</div><div class='prediction-sex'><div><span>Machos</span><b class='"+maleTrend.className+"'>"+escapeHTML(trendHeadline(maleTrend))+"</b></div><div><span>Fêmeas</span><b class='"+femaleTrend.className+"'>"+escapeHTML(trendHeadline(femaleTrend))+"</b></div></div><div class='prediction-card__note'>"+trendValue(maleTrend)+" · "+trendValue(femaleTrend)+"</div></div>"+
     "<div class='prediction-card prediction-card--wide "+deviation.signal+"'><div class='prediction-card__label'>Deteção antecipada de desvios</div><div class='prediction-card__value'>"+escapeHTML(deviation.title)+"</div><div class='prediction-card__note'>"+escapeHTML(deviation.note)+"</div></div>";
 }
 
@@ -1788,8 +1804,8 @@ function loadBoviTrackSummary(){
   Promise.all([live,fallback]).then(function(results){
     var current=results[0], stored=results[1];
     if(current && stored){
-      current.history=Array.isArray(stored.history)?stored.history:[];
-      current.previous=stored.previous||null;
+      if(!Array.isArray(current.history)||!current.history.length) current.history=Array.isArray(stored.history)?stored.history:[];
+      if(!current.previous) current.previous=stored.previous||null;
     }
     if(current || stored) renderBoviTrackSummary(current||stored);
   });
