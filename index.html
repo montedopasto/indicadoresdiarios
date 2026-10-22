@@ -649,6 +649,7 @@ var ROTATE_MS = 7000;
 
 var SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcoOLTXvKf6K_4aejdyA7ZK6PObIzqyiLBBOPSehdSkKlxj9_ms0EqJOjT7u2lN11j5DaYIAkcqoy7/pub?output=csv";
 var NEWS_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgtnmWS6XFXm8V80ZzxQ1n4QwGxncyWqw4LnljjBu2kG5xWIRBoMLM_ya7cyg9B_Jyi9N2gqjSvVfS/pub?gid=0&single=true&output=csv";
+var BOVITRACK_LIVE_SUMMARY_URL = "https://script.google.com/macros/s/AKfycbxyobcRj8Phe6rCZKW-7kcOunoF5difoXlTtLKXCnZA_oprNAXwlqrZDTQcuTLQ0_35/exec?type=summary";
 var BOVITRACK_SUMMARY_URL = "data/bovitrack-summary.json";
 
 var WEATHER_URL =
@@ -1776,10 +1777,22 @@ function renderBoviTrackSummary(data){
 }
 
 function loadBoviTrackSummary(){
-  fetch(BOVITRACK_SUMMARY_URL+"?v="+Date.now(),{cache:"no-store"})
-    .then(function(response){if(!response.ok) throw new Error("bovitrack summary");return response.json();})
-    .then(renderBoviTrackSummary)
-    .catch(function(){});
+  var stamp=Date.now();
+  var live=fetch(BOVITRACK_LIVE_SUMMARY_URL+"&v="+stamp,{cache:"no-store",credentials:"omit"})
+    .then(function(response){if(!response.ok) throw new Error("bovitrack live");return response.json();})
+    .catch(function(){return null;});
+  var fallback=fetch(BOVITRACK_SUMMARY_URL+"?v="+stamp,{cache:"no-store"})
+    .then(function(response){if(!response.ok) throw new Error("bovitrack fallback");return response.json();})
+    .catch(function(){return null;});
+
+  Promise.all([live,fallback]).then(function(results){
+    var current=results[0], stored=results[1];
+    if(current && stored){
+      current.history=Array.isArray(stored.history)?stored.history:[];
+      current.previous=stored.previous||null;
+    }
+    if(current || stored) renderBoviTrackSummary(current||stored);
+  });
 }
 
 function isBoviTrackOwnedKpiTitle(title){
@@ -2305,7 +2318,7 @@ setInterval(updateDayPeriod, 5*60*1000);
 
 scheduleStable(updateWeather,15*60*1000,0);
 scheduleStable(loadKPIs,15*60*1000,4000);
-scheduleStable(loadBoviTrackSummary,60*60*1000,6000);
+scheduleStable(loadBoviTrackSummary,15*60*1000,6000);
 scheduleStable(loadNews,15*60*1000,8000);
 setTimeout(loadWorldNews,12000);
 setInterval(loadWorldNews,WORLD_NEWS_REFRESH_MS);
