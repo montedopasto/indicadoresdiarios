@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-27T22:44:00.858Z",
+  "generatedAt": "2026-11-28T07:51:23.348Z",
   "totalAnimals": 4423,
   "male": {
     "averageWeightKg": 375.2,
@@ -198,6 +198,16 @@
     },
     {
       "day": "2026-11-27",
+      "totalAnimals": 4423,
+      "male": {
+        "averageGmdKgDay": 1.42
+      },
+      "female": {
+        "averageGmdKgDay": 1
+      }
+    },
+    {
+      "day": "2026-11-28",
       "totalAnimals": 4423,
       "male": {
         "averageGmdKgDay": 1.42
